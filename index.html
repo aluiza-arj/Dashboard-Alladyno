@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alladyno · Diagnóstico Operacional</title>
+<style>
+  :root{
+    --bg:#F5F7FA; --surface:#FFFFFF; --ink:#16213A; --muted:#64748B;
+    --line:#E4E9F0; --azul:#1F5FE0; --azul-deep:#123A8F; --azul-soft:#EAF1FE;
+    --green:#0FA968; --green-soft:#E6F6EF; --amber:#E0A106; --amber-soft:#FDF3DA;
+    --red:#E0393E; --red-soft:#FCE9EA; --gray:#94A3B8; --gray-soft:#EEF1F5;
+    --teal:#0E8C8C; --teal-soft:#E2F4F4;
+    --shadow:0 1px 2px rgba(16,33,64,.06),0 8px 24px rgba(16,33,64,.05);
+    --side:248px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .num{font-variant-numeric:tabular-nums}
+
+  .mobile-topbar{display:none;align-items:center;gap:12px;position:sticky;top:0;z-index:30;background:#0E1B33;color:#fff;padding:12px 16px}
+  .hamburger{width:36px;height:36px;border:0;background:rgba(255,255,255,.14);border-radius:8px;color:#fff;font-size:18px;cursor:pointer;line-height:1}
+  .mobile-topbar .mt{font-size:14px;font-weight:800}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(10,20,40,.5);z-index:40}
+
+  aside{position:fixed;top:0;left:0;width:var(--side);height:100vh;background:#0E1B33;
+    color:#C7D2E6;overflow-y:auto;padding:22px 14px 40px}
+  .brand{padding:4px 8px 18px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:14px}
+  .brand .b1{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#5B79B0;font-weight:700}
+  .brand .b2{font-size:16px;font-weight:800;color:#fff;margin-top:3px;letter-spacing:-.01em}
+  .brand .b3{font-size:10.5px;color:#5B79B0;margin-top:5px}
+  .navgroup{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#5B79B0;font-weight:700;padding:16px 8px 6px}
+  .nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;
+    cursor:pointer;font-size:13px;color:#C7D2E6;transition:.12s;line-height:1.25}
+  .nav-item:hover{background:rgba(255,255,255,.06);color:#fff}
+  .nav-item.active{background:var(--azul);color:#fff;font-weight:600}
+  .nav-item .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .nav-item .nm{flex:1;min-width:0}
+  .nav-item .ct{font-size:11px;color:#7E93BC;font-variant-numeric:tabular-nums}
+  .nav-item.active .ct{color:#DCE6FA}
+  .dot.critico{background:var(--red)} .dot.vazio{background:var(--gray)}
+  .dot.vazio_bom{background:var(--teal)}
+  .dot.atencao{background:var(--amber)} .dot.ativo{background:var(--green)}
+
+  main{margin-left:var(--side);padding:34px 40px 72px;max-width:1080px}
+  .view{display:none}
+  .eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--azul)}
+  h1{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:6px 0 4px}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:20px}
+
+  .flag{background:var(--amber-soft);border:1px solid #F0DFA8;border-radius:10px;padding:11px 14px;
+    font-size:12.5px;color:#7A5602;margin-bottom:22px;line-height:1.5}
+  .flag b{font-weight:800}
+
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:0 0 20px}
+  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:15px 15px 13px;box-shadow:var(--shadow)}
+  .kpi .v{font-size:27px;font-weight:800;letter-spacing:-.03em;line-height:1}
+  .kpi .l{font-size:11px;color:var(--muted);margin-top:7px;font-weight:600}
+  .kpi.alert .v{color:var(--red)} .kpi.good .v{color:var(--green)}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:var(--shadow)}
+  .card h2{font-size:14px;font-weight:800;margin:0 0 2px}
+  .card .hint{font-size:11.5px;color:var(--muted);margin:0 0 16px}
+
+  .row{display:grid;grid-template-columns:96px 1fr 40px;align-items:center;gap:10px;margin-bottom:11px}
+  .row .name{font-size:12.5px;font-weight:600}
+  .track{height:22px;background:#F0F3F8;border-radius:6px;overflow:hidden}
+  .seg{height:100%;border-radius:6px}
+  .row .tot{font-size:13px;font-weight:700;text-align:right}
+
+  .thr{list-style:none;margin:0;padding:0}
+  .thr li{display:grid;grid-template-columns:80px 1fr 34px;gap:10px;align-items:center;margin-bottom:10px}
+  .thr .name{font-size:12.5px;font-weight:600}
+  .thr .tbar{height:18px;background:var(--red);border-radius:5px;opacity:.9;min-width:2px}
+  .thr .tn{font-size:12.5px;font-weight:700;text-align:right}
+  .thr .zero{color:var(--muted);font-weight:600}
+
+  .aband{list-style:none;margin:0;padding:0}
+  .aband li{display:grid;grid-template-columns:20px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+  .aband li:last-child{border-bottom:0}
+  .rank{font-size:12px;font-weight:800;color:var(--muted);text-align:center}
+  .ab-title{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ab-meta{font-size:11px;color:var(--muted);margin-top:2px}
+  .ab-bar{height:8px;border-radius:4px;background:var(--red)}
+  .ab-days{font-size:12px;font-weight:800;color:var(--red);width:56px;text-align:right}
+  .ab-wrap{display:flex;align-items:center;gap:8px}
+
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:24px 0 14px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:12px;font-weight:600;
+    padding:6px 12px;border-radius:999px;cursor:pointer}
+  .chip.on{background:var(--azul);border-color:var(--azul);color:#fff}
+  .spacer{flex:1}
+  select,input[type=search]{font:inherit;font-size:12.5px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
+  input[type=search]{min-width:180px}
+  .tblwrap{width:100%}
+  table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+  thead th{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:left;padding:12px 14px;background:#FAFBFD;border-bottom:1px solid var(--line);font-weight:700;cursor:pointer}
+  tbody td{padding:11px 14px;border-bottom:1px solid var(--line);font-size:12.5px;vertical-align:top}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:hover{background:#FAFBFD}
+  .t-title{font-weight:600;max-width:400px}
+  .t-obs{color:var(--muted);font-size:11px;margin-top:3px;max-width:400px}
+  .badge{display:inline-block;font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap}
+  .st-and{background:var(--azul-soft);color:var(--azul-deep)}
+  .st-nao{background:#F1F3F7;color:#5A6474}
+  .pr-Alta{background:var(--red-soft);color:var(--red)}
+  .pr-Média{background:var(--amber-soft);color:#9A6E04}
+  .pr-Baixa{background:var(--green-soft);color:#2E7D46}
+  .pr-none{color:var(--muted);font-size:11px}
+  .late{color:var(--red);font-weight:700} .ontime{color:var(--muted)}
+  .today{color:var(--amber);font-weight:700}
+  .count{font-size:12px;color:var(--muted)}
+
+  .health{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:0 0 22px}
+  .hcard{border-radius:12px;padding:15px 16px;color:#fff}
+  .hcard .v{font-size:26px;font-weight:800;line-height:1}
+  .hcard .l{font-size:11px;margin-top:6px;font-weight:600;opacity:.95;line-height:1.35}
+  .h-critico{background:var(--red)} .h-vazio{background:var(--gray)}
+  .h-vazio_bom{background:var(--teal)}
+  .h-atencao{background:var(--amber)} .h-ativo{background:var(--green)}
+  .flowgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .fcard{background:var(--surface);border:1px solid var(--line);border-left-width:4px;border-radius:12px;
+    padding:16px 18px;box-shadow:var(--shadow);cursor:pointer;transition:.12s}
+  .fcard:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(16,33,64,.1)}
+  .fcard.critico{border-left-color:var(--red)} .fcard.vazio{border-left-color:var(--gray)}
+  .fcard.vazio_bom{border-left-color:var(--teal)}
+  .fcard.atencao{border-left-color:var(--amber)} .fcard.ativo{border-left-color:var(--green)}
+  .fcard .ftop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .fcard .fname{font-size:14px;font-weight:700;letter-spacing:-.01em}
+  .vbadge{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:6px;white-space:nowrap}
+  .v-critico{background:var(--red-soft);color:var(--red)} .v-vazio{background:var(--gray-soft);color:#5A6474}
+  .v-vazio_bom{background:var(--teal-soft);color:var(--teal)}
+  .v-atencao{background:var(--amber-soft);color:#9A6E04} .v-ativo{background:var(--green-soft);color:#0B7A4B}
+  .fstats{display:flex;gap:16px;margin:12px 0 10px;font-size:11.5px;color:var(--muted)}
+  .fstats b{font-size:15px;color:var(--ink);font-weight:800;display:block}
+  .fdiag{font-size:12px;color:#48566E;line-height:1.45}
+  .minifunnel{display:flex;gap:3px;margin-top:12px;height:6px}
+  .minifunnel span{flex:1;background:#E4E9F0;border-radius:2px}
+
+  .backlink{font-size:12.5px;color:var(--azul);font-weight:600;cursor:pointer;margin-bottom:14px;display:inline-block}
+  .funnel{list-style:none;margin:16px 0 0;padding:0}
+  .funnel li{display:grid;grid-template-columns:210px 1fr 40px;gap:12px;align-items:center;margin-bottom:9px}
+  .fn-name{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .fn-track{height:26px;background:#F0F3F8;border-radius:6px;overflow:hidden}
+  .fn-bar{height:100%;border-radius:6px;min-width:2px}
+  .fn-ct{font-size:13px;font-weight:800;text-align:right}
+  .diagbox{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-top:22px;box-shadow:var(--shadow)}
+  .diagbox h3{margin:0 0 8px;font-size:13px;font-weight:800;display:flex;align-items:center;gap:8px}
+  .diagbox p{margin:0 0 6px;font-size:13px;color:#3C4A63;line-height:1.55}
+  .diagbox .acao{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-size:12.5px}
+  .diagbox .acao b{color:var(--azul-deep)}
+  .subttl{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:26px 0 4px}
+  .cardsum{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+  .csgroup{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+  .cshead{font-size:12.5px;font-weight:800;display:flex;align-items:center;gap:6px;margin-bottom:8px}
+  .csboard{font-weight:700;color:var(--azul-deep);font-size:10.5px;text-transform:uppercase;letter-spacing:.03em}
+  .cscount{font-size:11px;font-weight:700;color:var(--muted);background:var(--gray-soft);border-radius:999px;padding:1px 8px;margin-left:auto}
+  .csnote{font-size:11.5px;color:var(--muted);margin:0 0 8px}
+  .cslist{list-style:none;margin:0;padding:0}
+  .cslist li{padding:7px 0;border-bottom:1px solid var(--line)}
+  .cslist li:last-child{border-bottom:0}
+  .csim{display:block;font-size:12.5px;font-weight:600}
+  .csmeta{display:block;font-size:11px;color:var(--muted);margin-top:1px}
+
+  footer{margin-top:30px;font-size:11px;color:var(--muted);line-height:1.7}
+
+  @media(max-width:820px){
+    aside{position:fixed;transform:translateX(-100%);transition:transform .22s ease;z-index:50;width:264px;height:100vh;box-shadow:8px 0 28px rgba(0,0,0,.25)}
+    body.nav-open aside{transform:translateX(0)}
+    body.nav-open .overlay{display:block}
+    .mobile-topbar{display:flex}
+    main{margin-left:0;padding:20px 16px 60px;max-width:none}
+    .kpis,.health{grid-template-columns:repeat(2,1fr)}
+    .grid2,.flowgrid,.cardsum{grid-template-columns:1fr}
+    .funnel li{grid-template-columns:118px 1fr 30px}
+    h1{font-size:22px}
+    .tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:14px}
+    table{min-width:640px}
+    .t-title,.t-obs{max-width:none;white-space:normal}
+    .toolbar{gap:6px}
+    input[type=search]{min-width:0;flex:1}
+  }
+  @media(max-width:480px){
+    .kpis,.health{grid-template-columns:1fr 1fr}
+    .kpi .v{font-size:23px}
+    .fstats{gap:12px}
+    main{padding:18px 13px 56px}
+  }
+</style>
+</head>
+<body>
+
+<div class="mobile-topbar">
+  <button class="hamburger" id="hamburger" aria-label="Abrir menu">☰</button>
+  <span class="mt">Diagnóstico Operacional</span>
+</div>
+<div class="overlay" id="overlay"></div>
+
+<aside>
+  <div class="brand">
+    <div class="b1">Alladyno Imóveis</div>
+    <div class="b2">Diagnóstico Operacional</div>
+    <div class="b3">Dados de 09/07/2026</div>
+  </div>
+  <div class="navgroup">Operação</div>
+  <div class="nav-item" data-view="tarefas"><span class="nm">Tarefas (Notion)</span><span class="ct">19</span></div>
+  <div class="navgroup">Construção</div>
+  <div class="nav-item" data-view="fluxos"><span class="nm">Visão geral dos fluxos</span></div>
+  <div id="navFlows"></div>
+</aside>
+
+<main>
+  <!-- ===== OPERAÇÃO ===== -->
+  <section class="view" id="view-tarefas">
+    <div class="eyebrow">Operação</div>
+    <h1>Tarefas por responsável</h1>
+    <div class="sub num">Base: database “Tarefas” (Central Alladyno) · leitura de 09/07/2026</div>
+
+    <div class="flag">
+      <b>Atenção antes de apresentar:</b> as 11 tarefas ativas que estavam com a <b>Luana</b> não aparecem mais na base.
+      O total caiu de 72 para 61 e as concluídas subiram apenas de 40 para 42 — ou seja, não foram concluídas: foram
+      removidas ou reatribuídas. Confirmar o que houve antes de usar estes números.
+    </div>
+
+    <section class="kpis">
+      <div class="kpi"><div class="v num">19</div><div class="l">Ativas</div></div>
+      <div class="kpi alert"><div class="v num">7</div><div class="l">Ativas atrasadas</div></div>
+      <div class="kpi"><div class="v num">69%</div><div class="l">Taxa de conclusão</div></div>
+      <div class="kpi good"><div class="v num">42</div><div class="l">Concluídas</div></div>
+      <div class="kpi"><div class="v num">61</div><div class="l">Total</div></div>
+    </section>
+
+    <div class="grid2">
+      <div class="card">
+        <h2>Tarefas por responsável</h2>
+        <p class="hint">Somente tarefas ativas (não concluídas).</p>
+        <div id="workload"></div>
+      </div>
+      <div class="card">
+        <h2>Atrasadas por responsável</h2>
+        <p class="hint">Onde o atraso está concentrado hoje.</p>
+        <ul class="thr" id="lateby"></ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Ranking de abandono</h2>
+      <p class="hint">Tarefas ativas ordenadas por dias de atraso.</p>
+      <ul class="aband" id="abandoned"></ul>
+    </div>
+
+    <div class="toolbar">
+      <div class="chips" id="respChips"></div>
+      <div class="spacer"></div>
+      <select id="statusSel">
+        <option value="">Todos os status (ativas)</option>
+        <option value="Em andamento">Em andamento</option>
+        <option value="Não iniciada">Não iniciada</option>
+      </select>
+      <input type="search" id="search" placeholder="Buscar tarefa…">
+    </div>
+    <div class="tblwrap"><table id="tbl">
+      <thead><tr>
+        <th data-k="t">Tarefa <span id="tblcount" class="count"></span></th>
+        <th data-k="r">Responsável</th><th data-k="st">Status</th>
+        <th data-k="pr">Prioridade</th><th data-k="prazo">Prazo</th><th data-k="atraso">Atraso</th>
+      </tr></thead>
+      <tbody id="tbody"></tbody>
+    </table></div>
+    <footer>Concluídas não trazem responsável preenchido na base, por isso o segundo gráfico mostra atraso — não throughput.</footer>
+  </section>
+
+  <!-- ===== CONSTRUÇÃO: VISÃO GERAL ===== -->
+  <section class="view" id="view-fluxos">
+    <div class="eyebrow">Construção</div>
+    <h1>Fluxos do Apresenta.me</h1>
+    <div class="sub">Quadros do sistema operacional da imobiliária. O objetivo é mostrar <b>quais fluxos estão em uso</b> — e onde a operação trava.</div>
+    <div class="health" id="health"></div>
+    <div class="flowgrid" id="flowgrid"></div>
+    <footer>
+      Reparos aparece unificado: board antigo “Gestão de Reparos” + board novo “Tickets”, para acompanhar a migração.<br>
+      Contagens lidas dos contadores no topo de cada coluna (09/07/2026). Captação não foi recapturada nesta rodada.
+    </footer>
+  </section>
+
+  <!-- ===== CONSTRUÇÃO: DETALHE ===== -->
+  <section class="view" id="view-flow">
+    <span class="backlink" onclick="showView('fluxos')">← Voltar aos fluxos</span>
+    <div id="flowDetail"></div>
+  </section>
+</main>
+
+<script>
+/* ===================== TAREFAS (NOTION · 09/07/2026) ===================== */
+const DATA=[
+ {r:"Danielle",t:"Verificar a DIMOB - F309",st:"Não iniciada",pr:"Alta",prazo:"10/07/2026",atraso:null,obs:""},
+ {r:"Danielle",t:"Revisar todos os contratos configurando multa e juros",st:"Em andamento",pr:"Alta",prazo:"22/06/2026",atraso:17,obs:"Multa e juros a favor do proprietário."},
+ {r:"Danielle",t:"Comprar chip Ferrarus e criar e-mail da Ferrarus",st:"Não iniciada",pr:"",prazo:"",atraso:null,obs:""},
+ {r:"Danielle",t:"Lançamento de taxas condominiais Residencial Tropical",st:"Em andamento",pr:"Média",prazo:"",atraso:null,obs:""},
+ {r:"Danielle",t:"Cobranças de aluguel — Hélio, Márcio, Francisco e Alexandre (Apresenta-me)",st:"Em andamento",pr:"Alta",prazo:"",atraso:null,obs:"Cobranças enviadas; acompanhar recebimentos."},
+
+ {r:"Jéssica",t:"Ligar no suporte do D4SIGN — transferir arquivos p/ Apresenta-me e cancelar assinatura",st:"Não iniciada",pr:"Média",prazo:"10/07/2026",atraso:null,obs:""},
+ {r:"Jéssica",t:"Digitalizar documentos das pastas",st:"Em andamento",pr:"Alta",prazo:"20/06/2026",atraso:19,obs:""},
+ {r:"Jéssica",t:"Cadastrar condomínios dos imóveis no Scaza (Lake Side)",st:"Em andamento",pr:"Média",prazo:"11/06/2026",atraso:29,obs:""},
+ {r:"Jéssica",t:"Ativar alertas de cadastro de imóvel (proprietários e inquilinos)",st:"Em andamento",pr:"Média",prazo:"10/06/2026",atraso:29,obs:"Iniciada; dando sequência todos os dias no fim do dia."},
+ {r:"Jéssica",t:"Ligar para a Cleide e o Marcus",st:"Não iniciada",pr:"",prazo:"",atraso:null,obs:""},
+ {r:"Jéssica",t:"Separar pastas casa 09 e 10 da Paulo Octavio",st:"Não iniciada",pr:"",prazo:"",atraso:null,obs:""},
+
+ {r:"Kawan",t:"Atualizar cards de Anúncio e Captação",st:"Não iniciada",pr:"",prazo:"11/07/2026",atraso:null,obs:"Fluxos do Apresenta.me desatualizados."},
+ {r:"Kawan",t:"Ligar p/ Leandro ou Regina — problema com Gerson e proprietária Madalena (DIMOB)",st:"Não iniciada",pr:"Média",prazo:"09/07/2026",atraso:0,obs:""},
+ {r:"Kawan",t:"Relatório super destaques",st:"Não iniciada",pr:"Alta",prazo:"09/07/2026",atraso:0,obs:""},
+ {r:"Kawan",t:"Processo vistoria C402 (entregar até 30/06)",st:"Em andamento",pr:"Média",prazo:"30/06/2026",atraso:9,obs:"Fotos organizadas; concluir observações e enviar p/ assinatura."},
+ {r:"Kawan",t:"Emitir certidões de ônus dos imóveis da Ana Kelly (Gontijo) p/ procuração",st:"Em andamento",pr:"Média",prazo:"27/06/2026",atraso:12,obs:"1 já tirada; concluir esta semana."},
+ {r:"Kawan",t:"Avaliação de venda do prédio — Recanto das Emas Q 111",st:"Não iniciada",pr:"Média",prazo:"26/06/2026",atraso:13,obs:"Retirar certidão de ônus e levantar o que há no prédio."},
+
+ {r:"Philipe",t:"G103 — infiltração ar-condicionado, acompanhar recuperação da parede",st:"Em andamento",pr:"Baixa",prazo:"16/08/2026",atraso:null,obs:"Remarcado p/ 16–30/08 a pedido da locatária."},
+ {r:"Philipe",t:"Processo Guilherme Amobb",st:"Em andamento",pr:"Média",prazo:"13/07/2026",atraso:null,obs:"Contrato fechado (R$ 5.600); enviar taxa de pré-contrato."}
+];
+const ORDER=["Kawan","Jéssica","Danielle","Philipe"];
+const $=s=>document.querySelector(s);
+
+const wl={}; ORDER.forEach(r=>wl[r]={act:0,late:0});
+DATA.forEach(d=>{if(!wl[d.r])wl[d.r]={act:0,late:0}; wl[d.r].act++; if(d.atraso>0)wl[d.r].late++;});
+const actMax=Math.max(...ORDER.map(r=>wl[r].act));
+$("#workload").innerHTML=ORDER.slice().sort((a,b)=>wl[b].act-wl[a].act).map(r=>{
+  const v=wl[r],w=v.act/actMax*100;
+  return `<div class="row"><div class="name">${r}</div><div class="track" style="width:${w}%"><div class="seg" style="width:100%;background:var(--azul)"></div></div><div class="tot num">${v.act}</div></div>`;
+}).join("");
+
+const lateArr=ORDER.map(r=>({r,n:wl[r].late})).sort((a,b)=>b.n-a.n);
+const lateMax=Math.max(...lateArr.map(x=>x.n),1);
+$("#lateby").innerHTML=lateArr.map(x=>
+  `<li><span class="name">${x.r}</span>`+
+  (x.n?`<span class="tbar" style="width:${x.n/lateMax*100}%"></span><span class="tn num">${x.n}</span>`
+      :`<span class="tbar" style="width:0"></span><span class="tn num zero">0</span>`)+`</li>`).join("");
+
+const ab=DATA.filter(d=>d.atraso>0).sort((a,b)=>b.atraso-a.atraso);
+const abMax=Math.max(...ab.map(d=>d.atraso));
+$("#abandoned").innerHTML=ab.map((d,i)=>`<li><span class="rank num">${i+1}</span><div><div class="ab-title">${d.t}</div><div class="ab-meta">${d.r} · ${d.st}${d.pr?" · "+d.pr:""}</div></div><div class="ab-wrap"><span class="ab-bar" style="width:${20+d.atraso/abMax*120}px;opacity:${.45+d.atraso/abMax*.55}"></span><span class="ab-days num">${d.atraso}d</span></div></li>`).join("");
+
+let fResp="",fStatus="",fq="",sortK="atraso",sortDir=-1;
+$("#respChips").innerHTML=["",...ORDER].map(r=>`<button class="chip${r===fResp?' on':''}" data-r="${r}">${r||"Todos"}</button>`).join("");
+$("#respChips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;fResp=b.dataset.r;document.querySelectorAll("#respChips .chip").forEach(c=>c.classList.toggle("on",c.dataset.r===fResp));renderTable();});
+$("#statusSel").addEventListener("change",e=>{fStatus=e.target.value;renderTable();});
+$("#search").addEventListener("input",e=>{fq=e.target.value.toLowerCase().trim();renderTable();});
+document.querySelectorAll("#tbl thead th").forEach(th=>th.addEventListener("click",()=>{const k=th.dataset.k;if(sortK===k)sortDir*=-1;else{sortK=k;sortDir=(k==="atraso")?-1:1;}renderTable();}));
+function stB(s){const m={"Em andamento":"st-and","Não iniciada":"st-nao"};return `<span class="badge ${m[s]||''}">${s}</span>`;}
+function prB(p){return p?`<span class="badge pr-${p}">${p}</span>`:`<span class="pr-none">—</span>`;}
+function renderTable(){
+  let rows=DATA.filter(d=>(!fResp||d.r===fResp)&&(!fStatus||d.st===fStatus)&&(!fq||d.t.toLowerCase().includes(fq)||(d.obs&&d.obs.toLowerCase().includes(fq))));
+  rows.sort((a,b)=>{let A=a[sortK],B=b[sortK];if(sortK==="atraso"){A=A==null?-1:A;B=B==null?-1:B;return (A-B)*sortDir;}A=(A||"").toString().toLowerCase();B=(B||"").toString().toLowerCase();return A<B?-sortDir:A>B?sortDir:0;});
+  $("#tblcount").textContent=`(${rows.length})`;
+  $("#tbody").innerHTML=rows.map(d=>{
+    const atr=d.atraso>0?`<span class="late num">${d.atraso}d</span>`
+      :(d.atraso===0?`<span class="today">vence hoje</span>`:`<span class="ontime">—</span>`);
+    return `<tr><td class="t-title">${d.t}${d.obs?`<div class="t-obs">${d.obs}</div>`:''}</td><td>${d.r}</td><td>${stB(d.st)}</td><td>${prB(d.pr)}</td><td class="num">${d.prazo||'—'}</td><td>${atr}</td></tr>`;
+  }).join("");
+}
+renderTable();
+
+/* ===================== FLUXOS (APRESENTA.ME · 09/07/2026) ===================== */
+const FLOWS=[
+ {id:"transicao",nome:"Transição de Administração",saude:"critico",
+  stages:[["Conferência de documentação",0],["Verificações Necessárias",1],["Contrato e Locatário (ocupado)",0],["Anúncio Comercial (desocupado)",0],["Concluído",0]],
+  diag:["Um único card, parado em “Verificações Necessárias” desde 30/04 — mais de 70 dias sem movimento.","É o card mais antigo parado de todo o sistema."],
+  acao:"Destravar ou arquivar. Um card imóvel há dois meses e meio não é fluxo, é esquecimento."},
+
+ {id:"renovacao",nome:"Renovação de Contrato",saude:"atencao",
+  stages:[["Não Iniciado",1],["Levantamento comercial",0],["Contato c/ proprietário",0],["Contato c/ Locatário",1],["Troca de Loc ou Garantia",0],["Confecção do contrato",2],["Aguardando assinatura",8],["Assinado — finalizar",8],["Concluído",3]],
+  diag:["Melhorou muito: “Aguardando assinatura” caiu de 15 para 8 e os concluídos subiram de 1 para 3.","Mas o gargalo apenas <b>mudou de lugar</b> — agora há 8 contratos já assinados parados em “Assinado — finalizar processo”. O trabalho difícil foi feito; falta fechar."],
+  acao:"Atacar a coluna “Assinado — finalizar”: são contratos já assinados. Fechar esses 8 é ganho rápido."},
+
+ {id:"reparos",nome:"Reparos (unificado)",saude:"atencao",
+  merged:true,
+  boards:[
+    {nome:"Gestão de Reparos (antigo)",stages:[["Não Iniciado",0],["Benfeitoria",0],["Orçamento | Prestador",0],["Autorização | Loc ou Prop",2],["Agendamento/Execução",2],["Conferência",1],["Financeiro",1],["Concluído",21]]},
+    {nome:"Tickets (novo)",stages:[["Pendente",0],["Em Análise",0],["Em Andamento",0],["Aguardando Retorno",0],["Reaberto",0],["Adiado",2]]}
+  ],
+  diag:["O volume real continua no board antigo: 21 concluídos e 6 ativos espalhados pelas etapas.","No board novo, os 2 únicos tickets estão em <b>“Adiado”</b> — nenhum em andamento. O Tickets virou depósito, não fluxo."],
+  acao:"Fechar a migração: congelar entrada no board antigo, mover os 6 ativos para Tickets e tirar os 2 adiados da geladeira."},
+
+ {id:"desocupados",nome:"Gestão de Imóveis Desocupados",saude:"vazio",
+  stages:[["Fila de monitoramento",0],["Visitas agendadas",0],["Visitas realizadas",0],["Checagem Comercial",0],["Concluído",0]],
+  diag:["Zero cards — o fluxo nunca foi usado.","Imóvel desocupado sem gestão é prejuízo dobrado: sem locação, o aluguel fica parado; sem reparo, o imóvel se deteriora. É o vazio mais caro do sistema."],
+  acao:"Ativar o monitoramento: cada imóvel vago entra como card e avança até a relocação, com checagem de conservação no caminho."},
+
+ {id:"captacao",nome:"Captação",saude:"atencao",stale:true,
+  stages:[["Contato c/ proprietário",3],["Visita / Avaliação técnica",1],["Convertido",1],["Lançamento de taxas",0],["Concluído",3]],
+  diag:["Dados da leitura anterior — este quadro não foi recapturado, e há tarefa aberta do Kawan justamente para “atualizar os cards de Anúncio e Captação”.","O padrão observado: uso reativo, com quase todos os cards marcados “Desistiu de deixar a administração”. Falta entrada semanal de prospecção — sem novos cards toda semana, captação não capta, só administra o que aparece."],
+  acao:"Atualizar o quadro e criar rotina semanal de prospecção com meta de imóveis contatados."},
+
+ {id:"inadimplencia",nome:"Inadimplência",saude:"atencao",
+  stages:[["Não Iniciado",1],["Atraso no repasse ao prop.",0],["+2 meses em atraso",0],["Loft acionada",0],["Seguro Fiança acionado",0],["Resgate Título Capitalização",0],["Resgate de Caução",0],["Acomp. ação judicial",0],["Concluído",7]],
+  diag:["Primeiro sinal de vida: 1 card entrou em “Não Iniciado” (Costa Verde 620).","Ainda assim, as 7 conclusões anteriores foram cards jogados direto para “Concluído”, quase todos sem dados. O pipeline de cobrança em si nunca foi percorrido."],
+  acao:"Fazer o card novo percorrer as etapas de verdade. Se a cobrança é gerida fora do sistema, o fluxo é redundante."},
+
+ {id:"efetivacao",nome:"Efetivação da locação",saude:"ativo",
+  stages:[["Cadastro recebido",1],["Análise do cadastro",0],["Confecção do contrato",2],["Desistência da locação",0],["Conferência e assinatura",3],["Fechamento",0],["Concluído",3]],
+  diag:["Destravou: o acúmulo em “Confecção do contrato” caiu de 4 para 2 e três locações avançaram para “Conferência e assinatura”.","Entrada nova chegando (Complexo Brasil 21). Fluxo funcionando."],
+  acao:""},
+
+ {id:"enc-locacao",nome:"Encerramento de Locação",saude:"ativo",
+  stages:[["Novas Desocupações",4],["Aguardando entrega das chaves",0],["Vistoria",1],["Orçamento de pendências",1],["Validação e Execução",0],["Levantamento de taxas",1],["Fechamento",0],["Finalizar procedimento",0],["Concluídos",8]],
+  diag:["Fluxo em uso real: 8 concluídos e 4 novas desocupações entrando.","Distribuído pelas etapas, sem acúmulo. Saudável."],
+  acao:"As 4 novas desocupações são matéria-prima do fluxo de Desocupados — que está vazio."},
+
+ {id:"anuncio",nome:"Anúncio Comercial",saude:"ativo",
+  stages:[["Não Iniciado",0],["Prompt de anúncio e fotos",0],["Avaliação técnica",0],["Conferência final",0],["Concluído",13]],
+  diag:["Zerou a fila: os concluídos saltaram de 8 para 13 e nenhum card ficou parado nas etapas intermediárias.","O melhor desempenho do sistema."],
+  acao:""},
+
+ {id:"enc-adm",nome:"Encerramento de ADM",saude:"vazio_bom",
+  stages:[["Não Iniciado",0],["Alinhamento com o proprietário",0],["Encerramento",0],["Concluído",0]],
+  diag:["Zero cards — e aqui isso é <b>notícia boa</b>.","Nenhum proprietário pediu para tirar o imóvel da administração no período. O quadro vazio mede retenção, não abandono."],
+  acao:""}
+];
+
+const HMETA={critico:{lbl:"Crítico"},vazio:{lbl:"Vazio"},vazio_bom:{lbl:"Vazio (bom)"},atencao:{lbl:"Atenção"},ativo:{lbl:"Ativo"}};
+const orderH={critico:0,vazio:1,atencao:2,ativo:3,vazio_bom:4};
+function HETA(s){return HMETA[s].lbl;}
+function isConcl(n){return /^Conclu/i.test(n);}
+function flowTotals(f){
+  const st=f.merged?f.boards.flatMap(b=>b.stages):f.stages;
+  let total=0,act=0,done=0;
+  st.forEach(([n,c])=>{total+=c; isConcl(n)?done+=c:act+=c;});
+  return {total,act,done};
+}
+function barColor(n,c,max){
+  if(isConcl(n))return "var(--green)";
+  if(c>0&&c===max)return "var(--red)";
+  return "var(--azul)";
+}
+function funnelHTML(stages){
+  const max=Math.max(...stages.map(s=>s[1]),1);
+  return `<ul class="funnel">`+stages.map(([n,c])=>{
+    const w=c/max*100;
+    return `<li><span class="fn-name" title="${n}">${n}</span><div class="fn-track"><div class="fn-bar" style="width:${c===0?0:Math.max(w,1.5)}%;background:${barColor(n,c,max)}"></div></div><span class="fn-ct num" style="color:${c===0?'var(--muted)':'var(--ink)'}">${c}</span></li>`;
+  }).join("")+`</ul>`;
+}
+
+const CARDS={
+ renovacao:[
+  {stage:"Não Iniciado",items:[{im:"Brisas do Lago 1Q nascente beira lago mobiliado (381)",meta:"Rosangela M. de Macedo R. Xavier → Gabriela Cl. Brisas do Lago · entrou 09/07"}]},
+  {stage:"Contato c/ Locatário",items:[{im:"Setor SHTN Trecho 1 02 - A409 (496)",meta:"Alejandro García Jiménez → Rudá Silva · Caução"}]},
+  {stage:"Confecção do contrato",items:[
+    {im:"Condomínio Privê Morada Sul Etapa C 31 (449)",meta:"Silvana Canuto Medeiros → Abdulrahman A. Sanitan Almutairi"},
+    {im:"Setor SHTN Trecho 1 02 - G103 (468)",meta:"Dra. Ana Paula → Adriana Campelo Santana · Caução"}]},
+  {stage:"Aguardando assinatura",note:"8 no total — legíveis nos prints:",items:[
+    {im:"G102 (536)",meta:"Claudia Silvia de Andrade → Thaysse Cl. Lake Side"},
+    {im:"A156 - Clsw 101 Bloco C (493)",meta:"Fabiano P. Amobb Sudoeste → Windsor Adm. de Hotéis"},
+    {im:"D414 (454)",meta:"Dario Valentino → João Paulo R. Capobianco"},
+    {im:"C412 (471)",meta:"Freimar Ferreira Bispo → L L Gestão e Reservas"},
+    {im:"H234 (480)",meta:"Maria Helena Allegretto Brayer → L L Gestão e Reservas"},
+    {im:"H145 (489)",meta:"Angela Maria Alves → Joston O. de Miguel Silva"}]},
+  {stage:"Assinado — finalizar processo",note:"8 no total — legíveis nos prints:",items:[
+    {im:"H234 (480)",meta:"Maria Helena → L L Gestão e Reservas"},
+    {im:"Quadra SQS 203 Bloco H (472)",meta:"Sidney Ferreira Batalha → Carlos Eduardo G. Araujo"},
+    {im:"D404 (460)",meta:"Park Cidade Estacionamento → Janet Guper · Isento"},
+    {im:"F104 (476)",meta:"Jose Batista Neto → Embaixada da Rep. Pop. da China"},
+    {im:"Residencial Via Paradiso, Águas Claras (571)",meta:"Gontijo & Abrahao → Jéssica Kelly da Silva Santos · Seguro Fiança"},
+    {im:"H210 (475)",meta:"Gontijo & Abrahao → L L Gestão e Reservas"},
+    {im:"C412 (471)",meta:"Freimar Ferreira Bispo → L L Gestão e Reservas"}]},
+  {stage:"Concluído",items:[
+    {im:"D415 (498)",meta:"Dona Vera → Chiou-Hwang Sheu"},
+    {im:"Setor SHTN Trecho 1 108 - Bloco G (486)",meta:"Maria Irma Barbosa → Paulo Cesar Segundo de Sousa"},
+    {im:"F413 (463)",meta:"Miriam Lucia Nascif Pessoa → Massimo de Angelis"}]}
+ ],
+ reparos:[
+  {board:"Antigo",stage:"Autorização | Loc ou Prop",items:[
+    {im:"Setor SHTN Trecho 1 02 - H145 (489)",meta:"Angela Maria Alves → Joston O. de Miguel Silva"},
+    {im:"QNN 20 Conj O Lote 41, Ceilândia Sul (565)",meta:"Gontijo & Abrahao → Iran Sousa de Freitas"}]},
+  {board:"Antigo",stage:"Agendamento/Execução",items:[
+    {im:"Setor SHTN Trecho 1 02 - G412 (469)",meta:"Otavio Alves Guimaraes → Luciana Melo Ramalho Lopez"},
+    {im:"Setor SHTN Trecho 1 02 - G103 (468)",meta:"Ana Paula de Oliveira Silva → Adriana Campelo Santana"}]},
+  {board:"Antigo",stage:"Conferência",items:[
+    {im:"Setor SHTN Trecho 1 02 - G206 (452)",meta:"Flavia Ribeiro → Alessandra Dahmer"}]},
+  {board:"Antigo",stage:"Financeiro",items:[
+    {im:"Setor SHTN Trecho 1 02 - D414 (454)",meta:"Dario Valentino → João Paulo R. Capobianco"}]},
+  {board:"Novo (Tickets)",stage:"Adiado",items:[
+    {im:"H103 — Restauração da parede (468)",meta:"Ana Paula de Oliveira → Adriana Campelo Santana · Alvenaria · Baixa"},
+    {im:"QNN 20 Conj O Lote 41 — Animal no forro (574)",meta:"Francisca Rebeca Saldanha (inquilina) · Telhado · Baixa"}]}
+ ],
+ "enc-locacao":[
+  {stage:"Novas Desocupações",items:[
+    {im:"Condomínio Amobb Térreo 4Q Jardim Botânico (180)",meta:"Fabiano Lima Oliveira → Vitor Tomoyuki Siguimoto"},
+    {im:"Setor SHTN Trecho 1 02 - H116 (494)",meta:"Lázara P. G122/H116/H236 → Alexandre Ricardo"},
+    {im:"Setor SHTN Trecho 1 02 - C314 (474)",meta:"Park Empreendimentos → Joao Jose de Alencar Cruz"},
+    {im:"Avenida Pau Brasil 2204 - Bloco B (512)",meta:"Marcos Aurelio A. de Oliveira → Paulo Roberto B. Lima"}]},
+  {stage:"Vistoria",items:[
+    {im:"QR 205 Conj 01 Lote 40 Apto 201, Samambaia (614)",meta:"Rosana Sahagoff Abrahao → Maria Elena Costa · Isento"}]},
+  {stage:"Orçamento de pendências",items:[
+    {im:"Setor SHTN Trecho 1 02 - G206 (452)",meta:"Flavia Ribeiro → Alessandra Dahmer"}]},
+  {stage:"Levantamento de taxas",items:[
+    {im:"Lake Side G121 Flat (623)",meta:"Marcos Aurelio Jr Pau Brasil → Localar (Gabriel)"}]},
+  {stage:"Concluídos",note:"8 no total — legíveis:",items:[
+    {im:"H323 (514)",meta:"Denise → Gerta Angélica Schultz Q. Cortes"},
+    {im:"H317 - Bloco H (510)",meta:"Rosana Charona → Carolina de Souza Lacerda A. França"},
+    {im:"QR 205 Apto 203, Samambaia (610)",meta:"Rosana Sahagoff Abrahao → Nathalia Angela S. Marambia"},
+    {im:"F309 (470)",meta:"Madalena Hashimura → Gerson Espindola"},
+    {im:"D414 (454)",meta:"Dario Valentino → Joao I. D414"}]}
+ ],
+ efetivacao:[
+  {stage:"Cadastro recebido",items:[
+    {im:"Complexo Brasil 21 Flat 2Q (628) — R$ 5.500",meta:"Pedro Paulo Guerra de Medeiros → Marcus Nogueira · vistoria ainda não feita"}]},
+  {stage:"Confecção do contrato",items:[
+    {im:"Lake Side 2Q Lazer Beira Lago (563) — R$ 12.000",meta:"Priscila Sarkis Amaral → Chiou-Hwang Sheu · Caução"},
+    {im:"Condomínio Amobb Térreo 4Q Jardim Botânico (180) — R$ 5.600",meta:"Fabiano P. Amobb → Guilherme Cl. · Caução"}]},
+  {stage:"Conferência e assinatura",items:[
+    {im:"Lake Side Mobiliado Vista Lago (268) — R$ 5.000",meta:"Denise P. H323 → Jose Luciano Arantes · Caução"},
+    {im:"Casa Condomínio Village 2 4Q Jardim Botânico (631) — R$ 5.600",meta:"Oswaldo P. → Elaine da Silva Gontijo · Caução"},
+    {im:"Quadra Shis QI 12 Conj 5 10 (455) — R$ 52.220,68",meta:"Wassita Participações → Michel Platini Juliani · Caução"}]},
+  {stage:"Concluído",items:[
+    {im:"Residencial Costa Verde Q208 Apto 1707, Águas Claras (620) — R$ 2.800",meta:"Yvone Lopes de Oliveira → Marcio Roni Almeida de Sousa"},
+    {im:"(2 cards sem valor preenchido)",meta:"—"}]}
+ ],
+ anuncio:[
+  {stage:"Concluído",note:"13 no total — legíveis:",items:[
+    {im:"Lake Side Locação Flat 1º Andar, SHTN Asa Norte (658) — R$ 4.950",meta:"Lázara P. G122/H116/H236 · Locação · publicado ✓"},
+    {im:"Lake Side 1Q Lazer Completo, SHTN Asa Norte (655) — R$ 7.500",meta:"Madalena Hashimura · Locação · ✓"},
+    {im:"Lake Side 1Q Andar Alto Reformado, SHTN (659) — R$ 935.000",meta:"Bruno Brey P. E405 · Venda · ✓"},
+    {im:"Lake Side Venda 1Q SHTN Andar Alto (657) — R$ 890.000",meta:"Alladyno Chefe · Venda · ✓"}]}
+ ],
+ inadimplencia:[
+  {stage:"Não Iniciado",items:[
+    {im:"Residencial Costa Verde Q208 Apto 1707, Águas Claras (620)",meta:"Contrato Anual (115) · Yvone Lopes de Oliveira → Marcio Roni Almeida de Sousa · entrou 08/07"}]},
+  {stage:"Concluído",note:"7 contratos, quase todos só com número:",items:[
+    {im:"Contrato Anual (101)",meta:"—"},{im:"Contrato Anual (70)",meta:"—"},
+    {im:"Contrato Anual (115)",meta:"Yvone Lopes → Marcio Roni · Costa Verde (620)"},
+    {im:"Contrato Anual (73)",meta:"—"},{im:"Contrato Anual (63)",meta:"—"},
+    {im:"Contrato Anual (103)",meta:"—"},{im:"Contrato Anual (44)",meta:"—"}]}
+ ],
+ transicao:[
+  {stage:"Verificações Necessárias",items:[
+    {im:"QR 205 Conj 01 Lote 40, Loja 01, Samambaia Norte/DF (612)",meta:"Parado desde 30/04/2026 — mais de 70 dias"}]}
+ ],
+ captacao:[
+  {stage:"Contato c/ proprietário",note:"Leitura anterior — quadro não recapturado.",items:[
+    {im:"SQN 316",meta:"Andrea P. · Desistiu de deixar a administração"},
+    {im:"Lake Side",meta:"Ilda P. · Desistiu de deixar a administração"},
+    {im:"Asa Norte",meta:"Julio · Desistiu de deixar a administração"}]},
+  {stage:"Visita / Avaliação técnica",items:[{im:"Lake Side Venda",meta:"Ana (filha dos proprietários) · Desistiu"}]},
+  {stage:"Convertido",items:[{im:"SQS 302 — R$ 13.000",meta:"Thyaerry · Desistiu"}]},
+  {stage:"Concluído",items:[
+    {im:"Park Way",meta:"Jaime · Desistiu"},
+    {im:"Privê Morada Sul Etapa A Lote P1-1 — R$ 990 mil",meta:"Maré · Desistiu"},
+    {im:"Lake Side H112 — R$ 615 mil",meta:"Raquel · Sim, enviar p/ próx. fase"}]}
+ ]
+};
+function cardsHTML(id,f){
+  const groups=CARDS[id];
+  if(!groups||!groups.length){
+    if(f&&flowTotals(f).total===0)
+      return `<div class="subttl">Resumo dos cards</div><p class="csnote">Nenhum card neste fluxo.</p>`;
+    return "";
+  }
+  let h=`<div class="subttl">Resumo dos cards</div><div class="cardsum">`;
+  groups.forEach(g=>{
+    h+=`<div class="csgroup"><div class="cshead">${g.board?`<span class="csboard">${g.board}</span> · `:''}${g.stage}<span class="cscount num">${g.items.length}</span></div>`;
+    if(g.note)h+=`<div class="csnote">${g.note}</div>`;
+    h+=`<ul class="cslist">`+g.items.map(it=>`<li><span class="csim">${it.im}</span>${it.meta&&it.meta!=="—"?`<span class="csmeta">${it.meta}</span>`:''}</li>`).join("")+`</ul></div>`;
+  });
+  return h+`</div>`;
+}
+
+const flowsSorted=[...FLOWS].sort((a,b)=>orderH[a.saude]-orderH[b.saude]);
+document.getElementById("navFlows").innerHTML=flowsSorted.map(f=>{
+  const t=flowTotals(f);
+  return `<div class="nav-item" data-view="flow" data-flow="${f.id}"><span class="dot ${f.saude}"></span><span class="nm">${f.nome}</span><span class="ct">${t.total}</span></div>`;
+}).join("");
+
+const hcount={critico:0,vazio:0,vazio_bom:0,atencao:0,ativo:0};
+FLOWS.forEach(f=>hcount[f.saude]++);
+document.getElementById("health").innerHTML=[
+  ["critico","Crítico","parado há +70 dias"],
+  ["vazio","Vazio","nunca usado · custa caro"],
+  ["atencao","Em atenção","gargalo ou subutilizado"],
+  ["ativo","Ativos","fluindo"],
+  ["vazio_bom","Vazio (bom)","ninguém saiu da carteira"]
+].map(([k,l,s])=>`<div class="hcard h-${k}"><div class="v num">${hcount[k]}</div><div class="l">${l}<br>${s}</div></div>`).join("");
+
+document.getElementById("flowgrid").innerHTML=flowsSorted.map(f=>{
+  const t=flowTotals(f);
+  const st=f.merged?f.boards.flatMap(b=>b.stages):f.stages;
+  const max=Math.max(...st.map(s=>s[1]),1);
+  const mini=st.map(([n,c])=>`<span style="flex:${Math.max(c,0.15)};background:${c===0?'#E4E9F0':barColor(n,c,max)}"></span>`).join("");
+  return `<div class="fcard ${f.saude}" onclick="showView('flow','${f.id}')">
+    <div class="ftop"><div class="fname">${f.nome}</div><span class="vbadge v-${f.saude}">${HETA(f.saude)}</span></div>
+    <div class="fstats"><div><b>${t.total}</b>total</div><div><b>${t.act}</b>ativos</div><div><b>${t.done}</b>concluídos</div></div>
+    <div class="fdiag">${f.diag[0]}</div>
+    <div class="minifunnel">${mini}</div>
+  </div>`;
+}).join("");
+
+function renderFlowDetail(id){
+  const f=FLOWS.find(x=>x.id===id); if(!f)return;
+  const t=flowTotals(f);
+  let body=`<div class="eyebrow">Construção · Fluxo</div><h1>${f.nome}</h1>
+    <div class="sub"><span class="vbadge v-${f.saude}" style="margin-right:8px">${HETA(f.saude)}</span>
+    ${t.total} cards · ${t.act} ativos · ${t.done} concluídos</div>`;
+  if(f.stale)body+=`<div class="flag"><b>Dado desatualizado:</b> este quadro não foi recapturado em 09/07. Números da leitura anterior.</div>`;
+  if(f.merged){ f.boards.forEach(b=>{ body+=`<div class="subttl">${b.nome}</div>`+funnelHTML(b.stages); }); }
+  else body+=funnelHTML(f.stages);
+  const icon={critico:"🔴",vazio:"⚫",vazio_bom:"🟦",atencao:"🟡",ativo:"🟢"}[f.saude];
+  body+=`<div class="diagbox"><h3>${icon} Diagnóstico</h3>${f.diag.map(p=>`<p>${p}</p>`).join("")}${f.acao?`<div class="acao"><b>Sugestão:</b> ${f.acao}</div>`:""}</div>`;
+  body+=cardsHTML(f.id,f);
+  document.getElementById("flowDetail").innerHTML=body;
+}
+
+function showView(view,flowId){
+  document.querySelectorAll(".view").forEach(v=>v.style.display="none");
+  if(view==="tarefas")document.getElementById("view-tarefas").style.display="block";
+  else if(view==="fluxos")document.getElementById("view-fluxos").style.display="block";
+  else if(view==="flow"){document.getElementById("view-flow").style.display="block";renderFlowDetail(flowId);}
+  document.querySelectorAll(".nav-item").forEach(n=>{
+    const match=n.dataset.view===view&&(view!=="flow"||n.dataset.flow===flowId);
+    n.classList.toggle("active",match);
+  });
+  document.body.classList.remove("nav-open");
+  window.scrollTo(0,0);
+}
+document.querySelectorAll(".nav-item").forEach(n=>n.addEventListener("click",()=>showView(n.dataset.view,n.dataset.flow)));
+document.getElementById("hamburger").addEventListener("click",()=>document.body.classList.toggle("nav-open"));
+document.getElementById("overlay").addEventListener("click",()=>document.body.classList.remove("nav-open"));
+showView("tarefas");
+</script>
+</body>
+</html>
