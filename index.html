@@ -10,7 +10,7 @@
     --line:#E4E9F0; --azul:#1F5FE0; --azul-deep:#123A8F; --azul-soft:#EAF1FE;
     --green:#0FA968; --green-soft:#E6F6EF; --amber:#E0A106; --amber-soft:#FDF3DA;
     --red:#E0393E; --red-soft:#FCE9EA; --gray:#94A3B8; --gray-soft:#EEF1F5;
-    --teal:#0E8C8C; --teal-soft:#E2F4F4;
+    --teal:#0E8C8C; --teal-soft:#E2F4F4; --violet:#6D3FC4; --violet-soft:#EEE7FA;
     --shadow:0 1px 2px rgba(16,33,64,.06),0 8px 24px rgba(16,33,64,.05);
     --side:248px;
   }
@@ -41,7 +41,7 @@
   .nav-item .ct{font-size:11px;color:#7E93BC;font-variant-numeric:tabular-nums}
   .nav-item.active .ct{color:#DCE6FA}
   .dot.critico{background:var(--red)} .dot.vazio{background:var(--gray)}
-  .dot.vazio_bom{background:var(--teal)}
+  .dot.vazio_bom{background:var(--teal)} .dot.novo{background:var(--violet)}
   .dot.atencao{background:var(--amber)} .dot.ativo{background:var(--green)}
 
   main{margin-left:var(--side);padding:34px 40px 72px;max-width:1080px}
@@ -115,25 +115,25 @@
   .today{color:var(--amber);font-weight:700}
   .count{font-size:12px;color:var(--muted)}
 
-  .health{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:0 0 22px}
-  .hcard{border-radius:12px;padding:15px 16px;color:#fff}
-  .hcard .v{font-size:26px;font-weight:800;line-height:1}
-  .hcard .l{font-size:11px;margin-top:6px;font-weight:600;opacity:.95;line-height:1.35}
+  .health{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:0 0 22px}
+  .hcard{border-radius:12px;padding:14px 14px;color:#fff}
+  .hcard .v{font-size:24px;font-weight:800;line-height:1}
+  .hcard .l{font-size:10.5px;margin-top:6px;font-weight:600;opacity:.95;line-height:1.35}
   .h-critico{background:var(--red)} .h-vazio{background:var(--gray)}
-  .h-vazio_bom{background:var(--teal)}
+  .h-vazio_bom{background:var(--teal)} .h-novo{background:var(--violet)}
   .h-atencao{background:var(--amber)} .h-ativo{background:var(--green)}
   .flowgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .fcard{background:var(--surface);border:1px solid var(--line);border-left-width:4px;border-radius:12px;
     padding:16px 18px;box-shadow:var(--shadow);cursor:pointer;transition:.12s}
   .fcard:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(16,33,64,.1)}
   .fcard.critico{border-left-color:var(--red)} .fcard.vazio{border-left-color:var(--gray)}
-  .fcard.vazio_bom{border-left-color:var(--teal)}
+  .fcard.vazio_bom{border-left-color:var(--teal)} .fcard.novo{border-left-color:var(--violet)}
   .fcard.atencao{border-left-color:var(--amber)} .fcard.ativo{border-left-color:var(--green)}
   .fcard .ftop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
   .fcard .fname{font-size:14px;font-weight:700;letter-spacing:-.01em}
   .vbadge{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:6px;white-space:nowrap}
   .v-critico{background:var(--red-soft);color:var(--red)} .v-vazio{background:var(--gray-soft);color:#5A6474}
-  .v-vazio_bom{background:var(--teal-soft);color:var(--teal)}
+  .v-vazio_bom{background:var(--teal-soft);color:var(--teal)} .v-novo{background:var(--violet-soft);color:var(--violet)}
   .v-atencao{background:var(--amber-soft);color:#9A6E04} .v-ativo{background:var(--green-soft);color:#0B7A4B}
   .fstats{display:flex;gap:16px;margin:12px 0 10px;font-size:11.5px;color:var(--muted)}
   .fstats b{font-size:15px;color:var(--ink);font-weight:800;display:block}
@@ -204,7 +204,7 @@
   <div class="brand">
     <div class="b1">Alladyno Imóveis</div>
     <div class="b2">Diagnóstico Operacional</div>
-    <div class="b3">Dados de 09/07/2026</div>
+    <div class="b3">Dados de 13/07/2026</div>
   </div>
   <div class="navgroup">Operação</div>
   <div class="nav-item" data-view="tarefas"><span class="nm">Tarefas (Notion)</span><span class="ct">19</span></div>
@@ -218,13 +218,7 @@
   <section class="view" id="view-tarefas">
     <div class="eyebrow">Operação</div>
     <h1>Tarefas por responsável</h1>
-    <div class="sub num">Base: database “Tarefas” (Central Alladyno) · leitura de 09/07/2026</div>
-
-    <div class="flag">
-      <b>Atenção antes de apresentar:</b> as 11 tarefas ativas que estavam com a <b>Luana</b> não aparecem mais na base.
-      O total caiu de 72 para 61 e as concluídas subiram apenas de 40 para 42 — ou seja, não foram concluídas: foram
-      removidas ou reatribuídas. Confirmar o que houve antes de usar estes números.
-    </div>
+    <div class="sub num">Base: database “Tarefas” (Central Alladyno) · leitura de 13/07/2026</div>
 
     <section class="kpis">
       <div class="kpi"><div class="v num">19</div><div class="l">Ativas</div></div>
@@ -271,7 +265,6 @@
       </tr></thead>
       <tbody id="tbody"></tbody>
     </table></div>
-    <footer>Concluídas não trazem responsável preenchido na base, por isso o segundo gráfico mostra atraso — não throughput.</footer>
   </section>
 
   <!-- ===== CONSTRUÇÃO: VISÃO GERAL ===== -->
@@ -282,8 +275,9 @@
     <div class="health" id="health"></div>
     <div class="flowgrid" id="flowgrid"></div>
     <footer>
-      Reparos aparece unificado: board antigo “Gestão de Reparos” + board novo “Tickets”, para acompanhar a migração.<br>
-      Contagens lidas dos contadores no topo de cada coluna (09/07/2026). Captação não foi recapturada nesta rodada.
+      Mudanças da semana: o board antigo “Gestão de Reparos” foi <b>excluído</b> — Reparos agora é só o quadro de Tickets.
+      Novo fluxo <b>Lançamentos Financeiros</b> criado (Assistente de Locação gera os cards para o Financeiro).<br>
+      Contagens lidas dos contadores no topo de cada coluna (13/07/2026).
     </footer>
   </section>
 
@@ -295,28 +289,25 @@
 </main>
 
 <script>
-/* ===================== TAREFAS (NOTION · 09/07/2026) ===================== */
+/* ===================== TAREFAS (NOTION · 13/07/2026) ===================== */
 const DATA=[
  {r:"Danielle",t:"Verificar a DIMOB - F309",st:"Não iniciada",pr:"Alta",prazo:"10/07/2026",atraso:null,obs:""},
  {r:"Danielle",t:"Revisar todos os contratos configurando multa e juros",st:"Em andamento",pr:"Alta",prazo:"22/06/2026",atraso:17,obs:"Multa e juros a favor do proprietário."},
  {r:"Danielle",t:"Comprar chip Ferrarus e criar e-mail da Ferrarus",st:"Não iniciada",pr:"",prazo:"",atraso:null,obs:""},
  {r:"Danielle",t:"Lançamento de taxas condominiais Residencial Tropical",st:"Em andamento",pr:"Média",prazo:"",atraso:null,obs:""},
  {r:"Danielle",t:"Cobranças de aluguel — Hélio, Márcio, Francisco e Alexandre (Apresenta-me)",st:"Em andamento",pr:"Alta",prazo:"",atraso:null,obs:"Cobranças enviadas; acompanhar recebimentos."},
-
  {r:"Jéssica",t:"Ligar no suporte do D4SIGN — transferir arquivos p/ Apresenta-me e cancelar assinatura",st:"Não iniciada",pr:"Média",prazo:"10/07/2026",atraso:null,obs:""},
  {r:"Jéssica",t:"Digitalizar documentos das pastas",st:"Em andamento",pr:"Alta",prazo:"20/06/2026",atraso:19,obs:""},
  {r:"Jéssica",t:"Cadastrar condomínios dos imóveis no Scaza (Lake Side)",st:"Em andamento",pr:"Média",prazo:"11/06/2026",atraso:29,obs:""},
  {r:"Jéssica",t:"Ativar alertas de cadastro de imóvel (proprietários e inquilinos)",st:"Em andamento",pr:"Média",prazo:"10/06/2026",atraso:29,obs:"Iniciada; dando sequência todos os dias no fim do dia."},
  {r:"Jéssica",t:"Ligar para a Cleide e o Marcus",st:"Não iniciada",pr:"",prazo:"",atraso:null,obs:""},
  {r:"Jéssica",t:"Separar pastas casa 09 e 10 da Paulo Octavio",st:"Não iniciada",pr:"",prazo:"",atraso:null,obs:""},
-
  {r:"Kawan",t:"Atualizar cards de Anúncio e Captação",st:"Não iniciada",pr:"",prazo:"11/07/2026",atraso:null,obs:"Fluxos do Apresenta.me desatualizados."},
  {r:"Kawan",t:"Ligar p/ Leandro ou Regina — problema com Gerson e proprietária Madalena (DIMOB)",st:"Não iniciada",pr:"Média",prazo:"09/07/2026",atraso:0,obs:""},
  {r:"Kawan",t:"Relatório super destaques",st:"Não iniciada",pr:"Alta",prazo:"09/07/2026",atraso:0,obs:""},
  {r:"Kawan",t:"Processo vistoria C402 (entregar até 30/06)",st:"Em andamento",pr:"Média",prazo:"30/06/2026",atraso:9,obs:"Fotos organizadas; concluir observações e enviar p/ assinatura."},
  {r:"Kawan",t:"Emitir certidões de ônus dos imóveis da Ana Kelly (Gontijo) p/ procuração",st:"Em andamento",pr:"Média",prazo:"27/06/2026",atraso:12,obs:"1 já tirada; concluir esta semana."},
  {r:"Kawan",t:"Avaliação de venda do prédio — Recanto das Emas Q 111",st:"Não iniciada",pr:"Média",prazo:"26/06/2026",atraso:13,obs:"Retirar certidão de ônus e levantar o que há no prédio."},
-
  {r:"Philipe",t:"G103 — infiltração ar-condicionado, acompanhar recuperação da parede",st:"Em andamento",pr:"Baixa",prazo:"16/08/2026",atraso:null,obs:"Remarcado p/ 16–30/08 a pedido da locatária."},
  {r:"Philipe",t:"Processo Guilherme Amobb",st:"Em andamento",pr:"Média",prazo:"13/07/2026",atraso:null,obs:"Contrato fechado (R$ 5.600); enviar taxa de pré-contrato."}
 ];
@@ -362,56 +353,57 @@ function renderTable(){
 }
 renderTable();
 
-/* ===================== FLUXOS (APRESENTA.ME · 09/07/2026) ===================== */
+/* ===================== FLUXOS (APRESENTA.ME · 13/07/2026) ===================== */
 const FLOWS=[
  {id:"transicao",nome:"Transição de Administração",saude:"critico",
   stages:[["Conferência de documentação",0],["Verificações Necessárias",1],["Contrato e Locatário (ocupado)",0],["Anúncio Comercial (desocupado)",0],["Concluído",0]],
-  diag:["Um único card, parado em “Verificações Necessárias” desde 30/04 — mais de 70 dias sem movimento.","É o card mais antigo parado de todo o sistema."],
+  diag:["Um único card, parado em “Verificações Necessárias” desde 30/04 — <b>74 dias</b> sem movimento.","É o card mais antigo parado de todo o sistema."],
   acao:"Destravar ou arquivar. Um card imóvel há dois meses e meio não é fluxo, é esquecimento."},
+
+ {id:"reparos",nome:"Reparos (Tickets)",saude:"atencao",
+  stages:[["Pendente",1],["Em Análise",0],["Em Andamento",0],["Aguardando Retorno",0],["Reaberto",0],["Adiado",2],["Concluído",0]],
+  diag:["Board antigo de reparos foi excluído: agora a gestão é 100% por Tickets. Bom passo.","Mas o quadro tem só 3 tickets e <b>2 estão em “Adiado”</b>. O único “Pendente” (QL 12 Casa 10) vence hoje. Nada em andamento, nada concluído — reparo parado é imóvel se deteriorando e proprietário insatisfeito."],
+  acao:"Tirar os 2 adiados da geladeira e mover o pendente de hoje para “Em Andamento”. Reparo não pode ficar só entrando e adiando."},
 
  {id:"renovacao",nome:"Renovação de Contrato",saude:"atencao",
   stages:[["Não Iniciado",1],["Levantamento comercial",0],["Contato c/ proprietário",0],["Contato c/ Locatário",1],["Troca de Loc ou Garantia",0],["Confecção do contrato",2],["Aguardando assinatura",8],["Assinado — finalizar",8],["Concluído",3]],
-  diag:["Melhorou muito: “Aguardando assinatura” caiu de 15 para 8 e os concluídos subiram de 1 para 3.","Mas o gargalo apenas <b>mudou de lugar</b> — agora há 8 contratos já assinados parados em “Assinado — finalizar processo”. O trabalho difícil foi feito; falta fechar."],
-  acao:"Atacar a coluna “Assinado — finalizar”: são contratos já assinados. Fechar esses 8 é ganho rápido."},
+  diag:["Estável em relação à semana passada: 8 aguardando assinatura, 8 já assinados, 3 concluídos.","O gargalo segue em “Assinado — finalizar processo”: 8 contratos <b>já assinados</b> parados. O trabalho difícil foi feito; falta apenas fechar."],
+  acao:"Puxar os 8 de “Assinado — finalizar”. É o ganho mais rápido do sistema — são contratos assinados esperando só o fechamento."},
 
- {id:"reparos",nome:"Reparos (unificado)",saude:"atencao",
-  merged:true,
-  boards:[
-    {nome:"Gestão de Reparos (antigo)",stages:[["Não Iniciado",0],["Benfeitoria",0],["Orçamento | Prestador",0],["Autorização | Loc ou Prop",2],["Agendamento/Execução",2],["Conferência",1],["Financeiro",1],["Concluído",21]]},
-    {nome:"Tickets (novo)",stages:[["Pendente",0],["Em Análise",0],["Em Andamento",0],["Aguardando Retorno",0],["Reaberto",0],["Adiado",2]]}
-  ],
-  diag:["O volume real continua no board antigo: 21 concluídos e 6 ativos espalhados pelas etapas.","No board novo, os 2 únicos tickets estão em <b>“Adiado”</b> — nenhum em andamento. O Tickets virou depósito, não fluxo."],
-  acao:"Fechar a migração: congelar entrada no board antigo, mover os 6 ativos para Tickets e tirar os 2 adiados da geladeira."},
-
- {id:"desocupados",nome:"Gestão de Imóveis Desocupados",saude:"vazio",
-  stages:[["Fila de monitoramento",0],["Visitas agendadas",0],["Visitas realizadas",0],["Checagem Comercial",0],["Concluído",0]],
-  diag:["Zero cards — o fluxo nunca foi usado.","Imóvel desocupado sem gestão é prejuízo dobrado: sem locação, o aluguel fica parado; sem reparo, o imóvel se deteriora. É o vazio mais caro do sistema."],
-  acao:"Ativar o monitoramento: cada imóvel vago entra como card e avança até a relocação, com checagem de conservação no caminho."},
-
- {id:"captacao",nome:"Captação",saude:"atencao",stale:true,
-  stages:[["Contato c/ proprietário",3],["Visita / Avaliação técnica",1],["Convertido",1],["Lançamento de taxas",0],["Concluído",3]],
-  diag:["Dados da leitura anterior — este quadro não foi recapturado, e há tarefa aberta do Kawan justamente para “atualizar os cards de Anúncio e Captação”.","O padrão observado: uso reativo, com quase todos os cards marcados “Desistiu de deixar a administração”. Falta entrada semanal de prospecção — sem novos cards toda semana, captação não capta, só administra o que aparece."],
-  acao:"Atualizar o quadro e criar rotina semanal de prospecção com meta de imóveis contatados."},
-
- {id:"inadimplencia",nome:"Inadimplência",saude:"atencao",
-  stages:[["Não Iniciado",1],["Atraso no repasse ao prop.",0],["+2 meses em atraso",0],["Loft acionada",0],["Seguro Fiança acionado",0],["Resgate Título Capitalização",0],["Resgate de Caução",0],["Acomp. ação judicial",0],["Concluído",7]],
-  diag:["Primeiro sinal de vida: 1 card entrou em “Não Iniciado” (Costa Verde 620).","Ainda assim, as 7 conclusões anteriores foram cards jogados direto para “Concluído”, quase todos sem dados. O pipeline de cobrança em si nunca foi percorrido."],
-  acao:"Fazer o card novo percorrer as etapas de verdade. Se a cobrança é gerida fora do sistema, o fluxo é redundante."},
-
- {id:"efetivacao",nome:"Efetivação da locação",saude:"ativo",
-  stages:[["Cadastro recebido",1],["Análise do cadastro",0],["Confecção do contrato",2],["Desistência da locação",0],["Conferência e assinatura",3],["Fechamento",0],["Concluído",3]],
-  diag:["Destravou: o acúmulo em “Confecção do contrato” caiu de 4 para 2 e três locações avançaram para “Conferência e assinatura”.","Entrada nova chegando (Complexo Brasil 21). Fluxo funcionando."],
-  acao:""},
+ {id:"efetivacao",nome:"Efetivação da locação",saude:"atencao",
+  stages:[["Cadastro recebido",1],["Análise do cadastro",0],["Confecção do contrato",3],["Desistência da locação",0],["Contratos para conferência",3],["Aguardando assinatura",0],["Transf. titularidade energia/água",0],["Concluído",3]],
+  diag:["O quadro ganhou novas etapas (“Contratos para conferência” e “Transferência de titularidade”), sinal de que está sendo estruturado.","Mas dois acúmulos apareceram: 3 em “Confecção do contrato” e 3 em “Contratos para conferência”. O meio do fluxo está engarrafando."],
+  acao:"Atacar “Confecção” e “Conferência” — 6 locações represadas antes da assinatura são 6 aluguéis que ainda não começaram a render."},
 
  {id:"enc-locacao",nome:"Encerramento de Locação",saude:"ativo",
   stages:[["Novas Desocupações",4],["Aguardando entrega das chaves",0],["Vistoria",1],["Orçamento de pendências",1],["Validação e Execução",0],["Levantamento de taxas",1],["Fechamento",0],["Finalizar procedimento",0],["Concluídos",8]],
   diag:["Fluxo em uso real: 8 concluídos e 4 novas desocupações entrando.","Distribuído pelas etapas, sem acúmulo. Saudável."],
   acao:"As 4 novas desocupações são matéria-prima do fluxo de Desocupados — que está vazio."},
 
+ {id:"captacao",nome:"Captação",saude:"atencao",
+  stages:[["Contato c/ proprietário",3],["Visita / Avaliação técnica",0],["Convertido",2],["Lançamento de taxas",0],["Concluído",3]],
+  diag:["Uso reativo e com muita perda: quase todos os cards estão marcados “Desistiu de deixar a administração”.","Falta entrada semanal de prospecção. Sem novos cards toda semana, captação não capta — só administra o que aparece. (Kawan tem tarefa aberta no Notion para atualizar este quadro.)"],
+  acao:"Criar rotina semanal de prospecção com meta de imóveis contatados e investigar por que tantos proprietários desistem na entrada."},
+
+ {id:"inadimplencia",nome:"Inadimplência",saude:"atencao",
+  stages:[["Não Iniciado",1],["Atraso no repasse ao prop.",0],["+2 meses em atraso",0],["Loft acionada",0],["Seguro Fiança acionado",0],["Resgate Título Capitalização",0],["Resgate de Caução",0],["Acomp. ação judicial",0],["Concluído",7]],
+  diag:["1 card entrou em “Não Iniciado” (Costa Verde 620) — primeiro sinal de vida.","As 7 conclusões anteriores foram cards jogados direto para “Concluído”, quase todos sem dados. O pipeline de cobrança nunca foi percorrido de verdade."],
+  acao:"Fazer o card novo percorrer as etapas. Se a cobrança é gerida fora do sistema, o fluxo é redundante."},
+
  {id:"anuncio",nome:"Anúncio Comercial",saude:"ativo",
-  stages:[["Não Iniciado",0],["Prompt de anúncio e fotos",0],["Avaliação técnica",0],["Conferência final",0],["Concluído",13]],
-  diag:["Zerou a fila: os concluídos saltaram de 8 para 13 e nenhum card ficou parado nas etapas intermediárias.","O melhor desempenho do sistema."],
+  stages:[["Não Iniciado",0],["Prompt de anúncio e fotos",0],["Avaliação técnica",0],["Conferência final",0],["Concluído",14]],
+  diag:["Segue impecável: 14 concluídos (era 13) e nenhum card parado nas etapas intermediárias.","O melhor desempenho do sistema."],
   acao:""},
+
+ {id:"desocupados",nome:"Gestão de Imóveis Desocupados",saude:"vazio",
+  stages:[["Fila de monitoramento",0],["Visitas agendadas",0],["Visitas realizadas",0],["Checagem Comercial",0],["Concluído",0]],
+  diag:["Zero cards — o fluxo nunca foi usado.","Imóvel desocupado sem gestão é prejuízo dobrado: sem locação, o aluguel fica parado; sem reparo, o imóvel se deteriora. É o vazio mais caro do sistema — ainda mais com 4 desocupações novas entrando no Encerramento."],
+  acao:"Ativar o monitoramento: cada imóvel vago entra como card e avança até a relocação, com checagem de conservação no caminho."},
+
+ {id:"lancamentos",nome:"Lançamentos Financeiros",saude:"novo",
+  stages:[["Captação",0],["Efetivação da locação",0],["Encerramento de ADM",0],["Renovação de contrato",0],["Reparos",0],["Concluídos",0]],
+  diag:["Fluxo <b>recém-criado</b>: o Assistente de Locação gera aqui os cards para o Financeiro, conforme os processos andam.","Zero card é esperado — acabou de nascer. Não conta como abandono; é o sistema evoluindo."],
+  acao:"Acompanhar nas próximas semanas se os cards realmente começam a ser gerados a partir dos outros fluxos."},
 
  {id:"enc-adm",nome:"Encerramento de ADM",saude:"vazio_bom",
   stages:[["Não Iniciado",0],["Alinhamento com o proprietário",0],["Encerramento",0],["Concluído",0]],
@@ -419,14 +411,13 @@ const FLOWS=[
   acao:""}
 ];
 
-const HMETA={critico:{lbl:"Crítico"},vazio:{lbl:"Vazio"},vazio_bom:{lbl:"Vazio (bom)"},atencao:{lbl:"Atenção"},ativo:{lbl:"Ativo"}};
-const orderH={critico:0,vazio:1,atencao:2,ativo:3,vazio_bom:4};
+const HMETA={critico:{lbl:"Crítico"},vazio:{lbl:"Vazio"},vazio_bom:{lbl:"Vazio (bom)"},novo:{lbl:"Novo"},atencao:{lbl:"Atenção"},ativo:{lbl:"Ativo"}};
+const orderH={critico:0,vazio:1,atencao:2,ativo:3,novo:4,vazio_bom:5};
 function HETA(s){return HMETA[s].lbl;}
 function isConcl(n){return /^Conclu/i.test(n);}
 function flowTotals(f){
-  const st=f.merged?f.boards.flatMap(b=>b.stages):f.stages;
   let total=0,act=0,done=0;
-  st.forEach(([n,c])=>{total+=c; isConcl(n)?done+=c:act+=c;});
+  f.stages.forEach(([n,c])=>{total+=c; isConcl(n)?done+=c:act+=c;});
   return {total,act,done};
 }
 function barColor(n,c,max){
@@ -443,25 +434,32 @@ function funnelHTML(stages){
 }
 
 const CARDS={
+ reparos:[
+  {stage:"Pendente",items:[
+    {im:"Reparos QL 12 Conj 05 Casa 10 (629 · Ref Paulo Octavio)",meta:"Hader Mohammed Hader Alziyad · Pintura · Alta · vence hoje 13/07"}]},
+  {stage:"Adiado",items:[
+    {im:"H103 — Restauração da parede (468)",meta:"Ana Paula de Oliveira Silva → Adriana Campelo Santana · Alvenaria · Baixa"},
+    {im:"QNN 20 Conj O Lote 41 — Animal no forro (574)",meta:"Francisca Rebeca Saldanha (inquilina) · Telhado · Baixa"}]}
+ ],
  renovacao:[
   {stage:"Não Iniciado",items:[{im:"Brisas do Lago 1Q nascente beira lago mobiliado (381)",meta:"Rosangela M. de Macedo R. Xavier → Gabriela Cl. Brisas do Lago · entrou 09/07"}]},
   {stage:"Contato c/ Locatário",items:[{im:"Setor SHTN Trecho 1 02 - A409 (496)",meta:"Alejandro García Jiménez → Rudá Silva · Caução"}]},
   {stage:"Confecção do contrato",items:[
     {im:"Condomínio Privê Morada Sul Etapa C 31 (449)",meta:"Silvana Canuto Medeiros → Abdulrahman A. Sanitan Almutairi"},
     {im:"Setor SHTN Trecho 1 02 - G103 (468)",meta:"Dra. Ana Paula → Adriana Campelo Santana · Caução"}]},
-  {stage:"Aguardando assinatura",note:"8 no total — legíveis nos prints:",items:[
+  {stage:"Aguardando assinatura",note:"8 no total — legíveis:",items:[
     {im:"G102 (536)",meta:"Claudia Silvia de Andrade → Thaysse Cl. Lake Side"},
     {im:"A156 - Clsw 101 Bloco C (493)",meta:"Fabiano P. Amobb Sudoeste → Windsor Adm. de Hotéis"},
     {im:"D414 (454)",meta:"Dario Valentino → João Paulo R. Capobianco"},
     {im:"C412 (471)",meta:"Freimar Ferreira Bispo → L L Gestão e Reservas"},
     {im:"H234 (480)",meta:"Maria Helena Allegretto Brayer → L L Gestão e Reservas"},
     {im:"H145 (489)",meta:"Angela Maria Alves → Joston O. de Miguel Silva"}]},
-  {stage:"Assinado — finalizar processo",note:"8 no total — legíveis nos prints:",items:[
+  {stage:"Assinado — finalizar processo",note:"8 no total — legíveis:",items:[
     {im:"H234 (480)",meta:"Maria Helena → L L Gestão e Reservas"},
     {im:"Quadra SQS 203 Bloco H (472)",meta:"Sidney Ferreira Batalha → Carlos Eduardo G. Araujo"},
     {im:"D404 (460)",meta:"Park Cidade Estacionamento → Janet Guper · Isento"},
     {im:"F104 (476)",meta:"Jose Batista Neto → Embaixada da Rep. Pop. da China"},
-    {im:"Residencial Via Paradiso, Águas Claras (571)",meta:"Gontijo & Abrahao → Jéssica Kelly da Silva Santos · Seguro Fiança"},
+    {im:"Residencial Via Paradiso, Águas Claras (571)",meta:"Gontijo & Abrahao → Jéssica Kelly · Seguro Fiança"},
     {im:"H210 (475)",meta:"Gontijo & Abrahao → L L Gestão e Reservas"},
     {im:"C412 (471)",meta:"Freimar Ferreira Bispo → L L Gestão e Reservas"}]},
   {stage:"Concluído",items:[
@@ -469,20 +467,20 @@ const CARDS={
     {im:"Setor SHTN Trecho 1 108 - Bloco G (486)",meta:"Maria Irma Barbosa → Paulo Cesar Segundo de Sousa"},
     {im:"F413 (463)",meta:"Miriam Lucia Nascif Pessoa → Massimo de Angelis"}]}
  ],
- reparos:[
-  {board:"Antigo",stage:"Autorização | Loc ou Prop",items:[
-    {im:"Setor SHTN Trecho 1 02 - H145 (489)",meta:"Angela Maria Alves → Joston O. de Miguel Silva"},
-    {im:"QNN 20 Conj O Lote 41, Ceilândia Sul (565)",meta:"Gontijo & Abrahao → Iran Sousa de Freitas"}]},
-  {board:"Antigo",stage:"Agendamento/Execução",items:[
-    {im:"Setor SHTN Trecho 1 02 - G412 (469)",meta:"Otavio Alves Guimaraes → Luciana Melo Ramalho Lopez"},
-    {im:"Setor SHTN Trecho 1 02 - G103 (468)",meta:"Ana Paula de Oliveira Silva → Adriana Campelo Santana"}]},
-  {board:"Antigo",stage:"Conferência",items:[
-    {im:"Setor SHTN Trecho 1 02 - G206 (452)",meta:"Flavia Ribeiro → Alessandra Dahmer"}]},
-  {board:"Antigo",stage:"Financeiro",items:[
-    {im:"Setor SHTN Trecho 1 02 - D414 (454)",meta:"Dario Valentino → João Paulo R. Capobianco"}]},
-  {board:"Novo (Tickets)",stage:"Adiado",items:[
-    {im:"H103 — Restauração da parede (468)",meta:"Ana Paula de Oliveira → Adriana Campelo Santana · Alvenaria · Baixa"},
-    {im:"QNN 20 Conj O Lote 41 — Animal no forro (574)",meta:"Francisca Rebeca Saldanha (inquilina) · Telhado · Baixa"}]}
+ efetivacao:[
+  {stage:"Cadastro recebido",items:[
+    {im:"Complexo Brasil 21 Flat 2Q (628) — R$ 5.500",meta:"Pedro Paulo Guerra de Medeiros → Marcus Nogueira · vistoria ainda não feita"}]},
+  {stage:"Confecção do contrato",items:[
+    {im:"Lake Side Lazer Flat Beira Lago Mobiliado (340) — R$ 4.800",meta:"Lázara P. G122/H116/H236 → Cristian David Vanegas Ramirez · Caução"},
+    {im:"Lake Side 2Q Lazer Beira Lago (563) — R$ 12.000",meta:"Priscila Sarkis Amaral → Chiou-Hwang Sheu · Caução"},
+    {im:"Condomínio Amobb Térreo 4Q Jardim Botânico (180) — R$ 5.600",meta:"Fabiano P. Amobb → Guilherme Cl. · Caução"}]},
+  {stage:"Contratos para conferência",items:[
+    {im:"Lake Side Mobiliado Vista Lago (268) — R$ 5.000",meta:"Denise P. H323 → Jose Luciano Arantes · Caução"},
+    {im:"Casa Condomínio Village 2 4Q Jardim Botânico (631) — R$ 5.600",meta:"Oswaldo P. → Elaine da Silva Gontijo · Caução"},
+    {im:"Quadra Shis QI 12 Conj 5 10 (455) — R$ 52.220,68",meta:"Wassita Participações → Michel Platini Juliani · Caução"}]},
+  {stage:"Concluído",items:[
+    {im:"Residencial Costa Verde Q208 Apto 1707, Águas Claras (620) — R$ 2.800",meta:"Yvone Lopes de Oliveira → Marcio Roni Almeida de Sousa"},
+    {im:"(2 cards sem valor preenchido)",meta:"—"}]}
  ],
  "enc-locacao":[
   {stage:"Novas Desocupações",items:[
@@ -503,30 +501,29 @@ const CARDS={
     {im:"F309 (470)",meta:"Madalena Hashimura → Gerson Espindola"},
     {im:"D414 (454)",meta:"Dario Valentino → Joao I. D414"}]}
  ],
- efetivacao:[
-  {stage:"Cadastro recebido",items:[
-    {im:"Complexo Brasil 21 Flat 2Q (628) — R$ 5.500",meta:"Pedro Paulo Guerra de Medeiros → Marcus Nogueira · vistoria ainda não feita"}]},
-  {stage:"Confecção do contrato",items:[
-    {im:"Lake Side 2Q Lazer Beira Lago (563) — R$ 12.000",meta:"Priscila Sarkis Amaral → Chiou-Hwang Sheu · Caução"},
-    {im:"Condomínio Amobb Térreo 4Q Jardim Botânico (180) — R$ 5.600",meta:"Fabiano P. Amobb → Guilherme Cl. · Caução"}]},
-  {stage:"Conferência e assinatura",items:[
-    {im:"Lake Side Mobiliado Vista Lago (268) — R$ 5.000",meta:"Denise P. H323 → Jose Luciano Arantes · Caução"},
-    {im:"Casa Condomínio Village 2 4Q Jardim Botânico (631) — R$ 5.600",meta:"Oswaldo P. → Elaine da Silva Gontijo · Caução"},
-    {im:"Quadra Shis QI 12 Conj 5 10 (455) — R$ 52.220,68",meta:"Wassita Participações → Michel Platini Juliani · Caução"}]},
+ captacao:[
+  {stage:"Contato c/ proprietário",items:[
+    {im:"SQN 316",meta:"Andrea P. · (61) 9857-2727 · Desistiu de deixar a administração"},
+    {im:"Lake Side",meta:"Ilda P. · (61) 8101-8866 · Desistiu de deixar a administração"},
+    {im:"Asa Norte",meta:"Julio · (61) 8190-5333 · Desistiu de deixar a administração"}]},
+  {stage:"Convertido",items:[
+    {im:"Lake Side Venda",meta:"Ana (filha dos proprietários) · Desistiu"},
+    {im:"SQS 302 — R$ 13.000",meta:"Thyaerry · Desistiu"}]},
   {stage:"Concluído",items:[
-    {im:"Residencial Costa Verde Q208 Apto 1707, Águas Claras (620) — R$ 2.800",meta:"Yvone Lopes de Oliveira → Marcio Roni Almeida de Sousa"},
-    {im:"(2 cards sem valor preenchido)",meta:"—"}]}
+    {im:"Park Way",meta:"Jaime · Desistiu"},
+    {im:"Privê Morada Sul Etapa A Lote P1-1 — R$ 990 mil",meta:"Maré · Desistiu"},
+    {im:"Lake Side H112 — R$ 615 mil",meta:"Raquel · Sim, enviar p/ próx. fase"}]}
  ],
  anuncio:[
-  {stage:"Concluído",note:"13 no total — legíveis:",items:[
-    {im:"Lake Side Locação Flat 1º Andar, SHTN Asa Norte (658) — R$ 4.950",meta:"Lázara P. G122/H116/H236 · Locação · publicado ✓"},
+  {stage:"Concluído",note:"14 no total — legíveis:",items:[
+    {im:"Lake Side Locação Flat 1º Andar, SHTN Asa Norte (658) — R$ 4.950",meta:"Lázara P. G122/H116/H236 · Locação · ✓"},
     {im:"Lake Side 1Q Lazer Completo, SHTN Asa Norte (655) — R$ 7.500",meta:"Madalena Hashimura · Locação · ✓"},
     {im:"Lake Side 1Q Andar Alto Reformado, SHTN (659) — R$ 935.000",meta:"Bruno Brey P. E405 · Venda · ✓"},
     {im:"Lake Side Venda 1Q SHTN Andar Alto (657) — R$ 890.000",meta:"Alladyno Chefe · Venda · ✓"}]}
  ],
  inadimplencia:[
   {stage:"Não Iniciado",items:[
-    {im:"Residencial Costa Verde Q208 Apto 1707, Águas Claras (620)",meta:"Contrato Anual (115) · Yvone Lopes de Oliveira → Marcio Roni Almeida de Sousa · entrou 08/07"}]},
+    {im:"Residencial Costa Verde Q208 Apto 1707, Águas Claras (620)",meta:"Contrato Anual (115) · Yvone Lopes de Oliveira → Marcio Roni · entrou 08/07"}]},
   {stage:"Concluído",note:"7 contratos, quase todos só com número:",items:[
     {im:"Contrato Anual (101)",meta:"—"},{im:"Contrato Anual (70)",meta:"—"},
     {im:"Contrato Anual (115)",meta:"Yvone Lopes → Marcio Roni · Costa Verde (620)"},
@@ -535,19 +532,7 @@ const CARDS={
  ],
  transicao:[
   {stage:"Verificações Necessárias",items:[
-    {im:"QR 205 Conj 01 Lote 40, Loja 01, Samambaia Norte/DF (612)",meta:"Parado desde 30/04/2026 — mais de 70 dias"}]}
- ],
- captacao:[
-  {stage:"Contato c/ proprietário",note:"Leitura anterior — quadro não recapturado.",items:[
-    {im:"SQN 316",meta:"Andrea P. · Desistiu de deixar a administração"},
-    {im:"Lake Side",meta:"Ilda P. · Desistiu de deixar a administração"},
-    {im:"Asa Norte",meta:"Julio · Desistiu de deixar a administração"}]},
-  {stage:"Visita / Avaliação técnica",items:[{im:"Lake Side Venda",meta:"Ana (filha dos proprietários) · Desistiu"}]},
-  {stage:"Convertido",items:[{im:"SQS 302 — R$ 13.000",meta:"Thyaerry · Desistiu"}]},
-  {stage:"Concluído",items:[
-    {im:"Park Way",meta:"Jaime · Desistiu"},
-    {im:"Privê Morada Sul Etapa A Lote P1-1 — R$ 990 mil",meta:"Maré · Desistiu"},
-    {im:"Lake Side H112 — R$ 615 mil",meta:"Raquel · Sim, enviar p/ próx. fase"}]}
+    {im:"QR 205 Conj 01 Lote 40, Loja 01, Samambaia Norte/DF (612)",meta:"Parado desde 30/04/2026 — 74 dias"}]}
  ]
 };
 function cardsHTML(id,f){
@@ -572,21 +557,21 @@ document.getElementById("navFlows").innerHTML=flowsSorted.map(f=>{
   return `<div class="nav-item" data-view="flow" data-flow="${f.id}"><span class="dot ${f.saude}"></span><span class="nm">${f.nome}</span><span class="ct">${t.total}</span></div>`;
 }).join("");
 
-const hcount={critico:0,vazio:0,vazio_bom:0,atencao:0,ativo:0};
+const hcount={critico:0,vazio:0,vazio_bom:0,novo:0,atencao:0,ativo:0};
 FLOWS.forEach(f=>hcount[f.saude]++);
 document.getElementById("health").innerHTML=[
   ["critico","Crítico","parado há +70 dias"],
   ["vazio","Vazio","nunca usado · custa caro"],
-  ["atencao","Em atenção","gargalo ou subutilizado"],
+  ["atencao","Em atenção","gargalo/subutilizado"],
   ["ativo","Ativos","fluindo"],
+  ["novo","Novo","recém-implantado"],
   ["vazio_bom","Vazio (bom)","ninguém saiu da carteira"]
 ].map(([k,l,s])=>`<div class="hcard h-${k}"><div class="v num">${hcount[k]}</div><div class="l">${l}<br>${s}</div></div>`).join("");
 
 document.getElementById("flowgrid").innerHTML=flowsSorted.map(f=>{
   const t=flowTotals(f);
-  const st=f.merged?f.boards.flatMap(b=>b.stages):f.stages;
-  const max=Math.max(...st.map(s=>s[1]),1);
-  const mini=st.map(([n,c])=>`<span style="flex:${Math.max(c,0.15)};background:${c===0?'#E4E9F0':barColor(n,c,max)}"></span>`).join("");
+  const max=Math.max(...f.stages.map(s=>s[1]),1);
+  const mini=f.stages.map(([n,c])=>`<span style="flex:${Math.max(c,0.15)};background:${c===0?'#E4E9F0':barColor(n,c,max)}"></span>`).join("");
   return `<div class="fcard ${f.saude}" onclick="showView('flow','${f.id}')">
     <div class="ftop"><div class="fname">${f.nome}</div><span class="vbadge v-${f.saude}">${HETA(f.saude)}</span></div>
     <div class="fstats"><div><b>${t.total}</b>total</div><div><b>${t.act}</b>ativos</div><div><b>${t.done}</b>concluídos</div></div>
@@ -601,10 +586,8 @@ function renderFlowDetail(id){
   let body=`<div class="eyebrow">Construção · Fluxo</div><h1>${f.nome}</h1>
     <div class="sub"><span class="vbadge v-${f.saude}" style="margin-right:8px">${HETA(f.saude)}</span>
     ${t.total} cards · ${t.act} ativos · ${t.done} concluídos</div>`;
-  if(f.stale)body+=`<div class="flag"><b>Dado desatualizado:</b> este quadro não foi recapturado em 09/07. Números da leitura anterior.</div>`;
-  if(f.merged){ f.boards.forEach(b=>{ body+=`<div class="subttl">${b.nome}</div>`+funnelHTML(b.stages); }); }
-  else body+=funnelHTML(f.stages);
-  const icon={critico:"🔴",vazio:"⚫",vazio_bom:"🟦",atencao:"🟡",ativo:"🟢"}[f.saude];
+  body+=funnelHTML(f.stages);
+  const icon={critico:"🔴",vazio:"⚫",vazio_bom:"🟦",novo:"🟣",atencao:"🟡",ativo:"🟢"}[f.saude];
   body+=`<div class="diagbox"><h3>${icon} Diagnóstico</h3>${f.diag.map(p=>`<p>${p}</p>`).join("")}${f.acao?`<div class="acao"><b>Sugestão:</b> ${f.acao}</div>`:""}</div>`;
   body+=cardsHTML(f.id,f);
   document.getElementById("flowDetail").innerHTML=body;
