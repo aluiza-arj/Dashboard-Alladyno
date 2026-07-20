@@ -220,10 +220,11 @@
     <h1>Tarefas por responsável</h1>
     <div class="sub num">Base: database “Tarefas” (Central Alladyno) · leitura de 20/07/2026</div>
 
-    <section class="kpis" style="grid-template-columns:repeat(3,1fr)">
+    <section class="kpis" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
       <div class="kpi"><div class="v num">23</div><div class="l">Ativas</div></div>
       <div class="kpi alert"><div class="v num">4</div><div class="l">Ativas atrasadas</div></div>
       <div class="kpi"><div class="v num" style="color:var(--amber)">5</div><div class="l">Vencendo hoje</div></div>
+      <div class="kpi good"><div class="v num">26</div><div class="l">Concluídas semana passada</div></div>
     </section>
 
     <div class="grid2">
@@ -263,14 +264,14 @@
       </tr></thead>
       <tbody id="tbody"></tbody>
     </table></div>
-    <footer>A base não tem campo de “data de conclusão”, então este quadro foca no trabalho ativo (23 tarefas). “Atrasadas” e “vencendo hoje” são calculadas sobre o prazo.</footer>
+    <footer>“Atrasadas” e “vencendo hoje” são calculadas sobre o prazo. “Concluídas semana passada” (13–19/07) conta as tarefas em Concluído editadas na semana, pela propriedade “Última edição” — proxy da data de conclusão.</footer>
   </section>
 
   <!-- ===== CONSTRUÇÃO: VISÃO GERAL ===== -->
   <section class="view" id="view-fluxos">
     <div class="eyebrow">Construção</div>
     <h1>Fluxos do Apresenta.me</h1>
-    <div class="sub">Quadros do sistema operacional da imobiliária. O objetivo é mostrar <b>quais fluxos estão em uso</b> — e onde a operação trava.</div>
+    <div class="sub">Quadros do sistema operacional da imobiliária, com a contagem de cards por etapa (leitura de 20/07/2026).</div>
     <div class="health" id="health"></div>
     <div class="flowgrid" id="flowgrid"></div>
     <footer>
@@ -363,57 +364,57 @@ renderTable();
 const FLOWS=[
  {id:"transicao",nome:"Transição de Administração",saude:"critico",
   stages:[["Conferência de documentação",0],["Verificações Necessárias",1],["Contrato e Locatário (ocupado)",0],["Anúncio Comercial (desocupado)",0],["Concluído",0]],
-  diag:["Continua o mesmo card único parado em “Verificações Necessárias” desde 30/04 — mais de 80 dias sem se mexer.","É o card mais antigo travado de todo o sistema (QR 205 Loja 01, Samambaia)."],
-  acao:"Destravar ou arquivar. Quase três meses parado não é fluxo, é esquecimento."},
+  diag:["Continua o mesmo card único em “Verificações Necessárias” desde 30/04 — mais de 80 dias sem movimentação.","É o card mais antigo parado de todo o sistema (QR 205 Loja 01, Samambaia)."],
+  acao:""},
 
  {id:"renovacao",nome:"Renovação de Contrato",saude:"ativo",
   stages:[["Não Iniciado",0],["Levantamento comercial",0],["Contato c/ proprietário",0],["Contato c/ Locatário",2],["Troca de Loc ou Garantia",0],["Confecção do contrato",2],["Aguardando assinatura",4],["Assinado — finalizar",1],["Concluído",13]],
-  diag:["Destravou de vez: o gargalo de “Assinado — finalizar” caiu de 8 para <b>1</b> e os concluídos saltaram de 3 para <b>13</b>.","“Aguardando assinatura” também recuou (8 → 4). No período, foi o fluxo mais produtivo da carteira."],
-  acao:"Manter o ritmo: fechar o último assinado e empurrar os 4 aguardando assinatura."},
+  diag:["“Assinado — finalizar” caiu de 8 para <b>1</b> e os concluídos passaram de 3 para <b>13</b>.","“Aguardando assinatura” recuou de 8 para 4."],
+  acao:""},
 
  {id:"reparos",nome:"Reparos (Tickets)",saude:"atencao",
   stages:[["Pendente",1],["Em Análise",0],["Em Andamento",0],["Aguardando Retorno",0],["Reaberto",0],["Adiado",2]],
-  diag:["Migração concluída: o board antigo “Gestão de Reparos” foi aposentado e agora tudo vive no Tickets.","Mas os 3 tickets existentes estão parados — 1 recém-aberto em “Pendente” (QL 12 Casa 10, pintura) e 2 congelados em “Adiado”. Nenhum em andamento."],
-  acao:"Puxar o pendente para análise e tirar os 2 adiados da geladeira — senão o Tickets vira depósito, como era o board antigo."},
+  diag:["O board antigo “Gestão de Reparos” foi aposentado; agora os reparos ficam só no Tickets.","São 3 tickets: 1 em “Pendente” (QL 12 Casa 10, pintura) e 2 em “Adiado”. Nenhum em andamento."],
+  acao:""},
 
  {id:"desocupados",nome:"Gestão de Imóveis Desocupados",saude:"atencao",
   stages:[["Fila de monitoramento",0],["Visitas agendadas",1],["Visitas realizadas",0],["Checagem Comercial",0],["Concluído",0]],
-  diag:["Primeiro sinal de vida: entrou 1 imóvel (QR 205 Apto 201) com visita agendada para 18/07 — o fluxo que nunca tinha sido usado começou a rodar.","Ainda é 1 card só. Falta alimentar com os desocupados que já existem — as desocupações do Encerramento de Locação deveriam cair aqui."],
-  acao:"Transformar cada imóvel vago em card e levá-lo até a relocação, com checagem de conservação no caminho."},
+  diag:["Entrou 1 imóvel (QR 205 Apto 201) com visita agendada para 18/07 — primeiro card registrado neste fluxo, que antes estava zerado.","As 2 novas desocupações do fluxo de Encerramento de Locação ainda não aparecem aqui."],
+  acao:""},
 
  {id:"captacao",nome:"Captação",saude:"atencao",
   stages:[["Contato c/ proprietário",4],["Visita / Avaliação técnica",1],["Convertido",2],["Lançamento de taxas",0],["Concluído",3]],
-  diag:["Quadro recapturado (não é mais dado antigo): 4 em contato, 1 em visita, 2 convertidos, 3 concluídos.","O padrão preocupa: quase todos os cards marcados “Desistiu de deixar a administração”. Captação segue reativa — falta entrada semanal de prospecção."],
-  acao:"Criar rotina semanal de prospecção com meta de imóveis contatados, senão o fluxo só administra o que aparece."},
+  diag:["Quadro recapturado nesta rodada: 4 em contato, 1 em visita, 2 convertidos, 3 concluídos.","Quase todos os cards estão marcados “Desistiu de deixar a administração”."],
+  acao:""},
 
  {id:"inadimplencia",nome:"Inadimplência",saude:"atencao",
   stages:[["Não Iniciado",1],["Atraso no repasse ao prop.",2],["+2 meses em atraso",0],["Loft acionada",0],["Seguro Fiança acionado",0],["Resgate Título Capitalização",0],["Resgate de Caução",0],["Negativação",0],["Acomp. ação judicial",0],["Concluído",9]],
-  diag:["Agora há movimento real: 2 cards em “Atraso no repasse ao proprietário” e 1 em “Não Iniciado” (C412). Concluídos subiram de 7 para 9.","Antes os cards iam direto para “Concluído” sem passar pelas etapas; começou a percorrer o pipeline de cobrança de verdade."],
-  acao:"Manter os cards percorrendo as etapas. Se a cobrança é feita fora do sistema, o fluxo é redundante."},
+  diag:["2 cards em “Atraso no repasse ao proprietário” e 1 em “Não Iniciado” (C412); concluídos passaram de 7 para 9.","Nas leituras anteriores os cards iam direto para “Concluído”, sem passar pelas etapas intermediárias."],
+  acao:""},
 
  {id:"efetivacao",nome:"Efetivação da locação",saude:"ativo",
   stages:[["Cadastro recebido",0],["Análise do cadastro",0],["Confecção do contrato",1],["Desistência da locação",0],["Contratos para conferência",1],["Aguardando assinatura",0],["Transf. titularidade energia/água",1],["Concluído",7]],
-  diag:["Fluindo bem: os concluídos subiram de 3 para 7 e o quadro ganhou etapas novas (“Contratos para conferência” e “Transferência de titularidade de energia e água”).","Cards distribuídos, sem acúmulo. Entrada nova chegando (Complexo Brasil 21)."],
+  diag:["Concluídos passaram de 3 para 7. O quadro ganhou as etapas “Contratos para conferência” e “Transferência de titularidade de energia e água”.","Cards distribuídos pelas etapas; entrada nova registrada (Complexo Brasil 21)."],
   acao:""},
 
  {id:"enc-locacao",nome:"Encerramento de Locação",saude:"ativo",
   stages:[["Novas Desocupações",2],["Aviso Prévio",0],["Aguardando entrega das chaves",0],["Vistoria",1],["Orçamento de pendências",1],["Validação e Execução",1],["Levantamento de taxas",1],["Fechamento",0],["Finalizar procedimento",2],["Concluídos",8]],
-  diag:["Fluxo saudável e bem distribuído: 8 concluídos e cards espalhados por quase todas as etapas, sem gargalo.","2 novas desocupações entrando — matéria-prima que deveria abastecer o fluxo de Desocupados."],
-  acao:"As 2 novas desocupações são insumo do fluxo de Desocupados — conectar os dois."},
+  diag:["8 concluídos e cards distribuídos por quase todas as etapas.","2 novas desocupações registradas no período."],
+  acao:""},
 
  {id:"anuncio",nome:"Anúncio Comercial",saude:"ativo",
   stages:[["Não Iniciado",0],["Prompt de anúncio e fotos",0],["Avaliação técnica",0],["Conferência final",0],["Concluído",15]],
-  diag:["Fila zerada de novo: os concluídos subiram de 13 para 15 e nenhum card ficou preso nas etapas intermediárias.","Segue como o melhor desempenho do sistema."],
+  diag:["Concluídos passaram de 13 para 15; nenhum card nas etapas intermediárias.","Sem fila acumulada."],
   acao:""},
 
  {id:"lancamentos",nome:"Lançamentos Financeiros",saude:"atencao",
   stages:[["Captação",0],["Transição de ADM",0],["Efetivação da locação",0],["Encerramento de ADM",0],["Encerramento de Locação",1],["Renovação de contrato",0],["Reparos",0],["Concluídos",0]],
-  diag:["Quadro novo no Apresenta.me: roteia lançamentos financeiros por etapa do processo (Captação → Concluídos).","Por enquanto só 1 card, em “Encerramento de Locação” (Avenida Pau Brasil 2204, Bloco B). Fluxo recém-criado, ainda sem rotina."],
-  acao:"Definir o que dispara um card aqui e quem move — senão vira um segundo depósito paralelo ao financeiro real."},
+  diag:["Quadro novo no Apresenta.me: organiza lançamentos financeiros por etapa do processo (Captação → Concluídos).","Por enquanto 1 card, em “Encerramento de Locação” (Avenida Pau Brasil 2204, Bloco B)."],
+  acao:""},
 
  {id:"enc-adm",nome:"Encerramento de ADM",saude:"vazio_bom",
   stages:[["Não Iniciado",0],["Alinhamento com o proprietário",0],["Encerramento",0],["Concluído",0]],
-  diag:["Zero cards — e aqui isso é <b>notícia boa</b>.","Nenhum proprietário pediu para tirar o imóvel da administração no período. O quadro vazio mede retenção, não abandono."],
+  diag:["Zero cards no período.","Nenhum proprietário registrado pedindo saída da administração."],
   acao:""}
 ];
 
@@ -577,11 +578,11 @@ document.getElementById("navFlows").innerHTML=flowsSorted.map(f=>{
 const hcount={critico:0,vazio:0,vazio_bom:0,atencao:0,ativo:0};
 FLOWS.forEach(f=>hcount[f.saude]++);
 document.getElementById("health").innerHTML=[
-  ["critico","Crítico","parado há +70 dias"],
-  ["vazio","Vazio","nunca usado · custa caro"],
-  ["atencao","Em atenção","gargalo ou subutilizado"],
-  ["ativo","Ativos","fluindo"],
-  ["vazio_bom","Vazio (bom)","ninguém saiu da carteira"]
+  ["critico","Crítico","parado há +80 dias"],
+  ["vazio","Vazio","sem cards"],
+  ["atencao","Em atenção","com acúmulo ou pouco movimento"],
+  ["ativo","Ativos","com movimento no período"],
+  ["vazio_bom","Vazio (bom)","sem saídas da carteira"]
 ].map(([k,l,s])=>`<div class="hcard h-${k}"><div class="v num">${hcount[k]}</div><div class="l">${l}<br>${s}</div></div>`).join("");
 
 document.getElementById("flowgrid").innerHTML=flowsSorted.map(f=>{
@@ -607,7 +608,7 @@ function renderFlowDetail(id){
   if(f.merged){ f.boards.forEach(b=>{ body+=`<div class="subttl">${b.nome}</div>`+funnelHTML(b.stages); }); }
   else body+=funnelHTML(f.stages);
   const icon={critico:"🔴",vazio:"⚫",vazio_bom:"🟦",atencao:"🟡",ativo:"🟢"}[f.saude];
-  body+=`<div class="diagbox"><h3>${icon} Diagnóstico</h3>${f.diag.map(p=>`<p>${p}</p>`).join("")}${f.acao?`<div class="acao"><b>Sugestão:</b> ${f.acao}</div>`:""}</div>`;
+  body+=`<div class="diagbox"><h3>${icon} Diagnóstico</h3>${f.diag.map(p=>`<p>${p}</p>`).join("")}</div>`;
   body+=cardsHTML(f.id,f);
   document.getElementById("flowDetail").innerHTML=body;
 }
