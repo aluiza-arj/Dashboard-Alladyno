@@ -79,6 +79,13 @@
   .rot-card ul{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
   .rot-card li{font-size:11.5px;color:#3C4A63;padding-left:14px;position:relative;line-height:1.4}
   .rot-card li::before{content:"·";position:absolute;left:0;top:-1px;color:var(--azul);font-weight:800;font-size:16px}
+  .rot-card li.hasday{padding-left:0;display:flex;gap:8px;align-items:flex-start}
+  .rot-card li.hasday::before{display:none}
+  .day{flex:none;font-size:9px;font-weight:800;letter-spacing:.03em;color:#fff;background:var(--azul-deep);
+    border-radius:5px;padding:2px 0;line-height:1.35;margin-top:1px;width:34px;text-align:center}
+  .cargo-horario{max-width:1000px;margin:8px auto 0;font-size:11px;color:var(--muted);
+    display:flex;gap:6px 18px;flex-wrap:wrap;align-items:center}
+  .cargo-horario span{display:inline-flex;align-items:center;gap:5px}
 
   .cargo-sub{max-width:1000px;margin:34px auto 0;display:flex;align-items:baseline;gap:10px}
   .cargo-sub h3{font-size:14px;font-weight:800;color:var(--azul-deep);margin:0}
@@ -222,17 +229,31 @@
   <div class="ritmo">
     <span>🕖 <b>Segunda a sexta: 08h às 18h</b></span>
     <span>🗓️ <b>Sábados intercalados: 08h às 12h</b></span>
-    <span>🍽️ Almoço intercalado — 12h um colaborador, 13h o outro</span>
+    <span>🍽️ Almoços escalonados por cargo, garantindo cobertura mútua</span>
     <span>🔁 Vale para as duas duplas de cobertura mútua</span>
   </div>
 
   <div class="cargo-sub"><h3>Comercial</h3></div>
+  <div class="cargo-horario">
+    <span>🕖 Seg a sex: 08h–18h</span>
+    <span>🗓️ Sábados intercalados: 08h–12h</span>
+    <span>🍽️ Almoço: 13h00–14h00 (1h)</span>
+  </div>
   <div class="rotinas">
     <div class="rot-card">
       <div class="freq">Diária</div>
       <ul>
-        <li>Bloco de 1h para captação (ligações, visitas, e-mails)</li>
+        <li>Bloco de 1h para captação — ligações, visitas, e-mails (2x/semana)</li>
         <li>Atualizar fluxos no Apresenta.me</li>
+        <li>Analisar WhatsApp</li>
+        <li>Verificar o e-mail</li>
+        <li>Ligar para todos os clientes que estiverem disponíveis</li>
+        <li>Verificar tarefas do dia anterior</li>
+        <li>Tarde: confecção de contrato / captação</li>
+        <li>Dar andamento nos atendimentos e e-mails</li>
+        <li>Concluir atendimento</li>
+        <li>Preparar rotina do próximo dia</li>
+        <li>Fechar imobiliária</li>
       </ul>
     </div>
     <div class="rot-card">
@@ -240,22 +261,42 @@
       <ul>
         <li>Planejar agenda de captação da semana</li>
         <li>Follow-up com leads sem retorno há 15 dias</li>
+        <li>Relatório semanal de rendimento</li>
       </ul>
     </div>
     <div class="rot-card">
       <div class="freq">Mensal</div>
       <ul>
         <li>Conferir imóveis desocupados sem visita no mês anterior — preparar ações da semana seguinte</li>
+        <li>Relatório mensal de desempenho do comercial</li>
+      </ul>
+    </div>
+    <div class="rot-card">
+      <div class="freq">Anual</div>
+      <ul>
+        <li>Relatório anual — imóveis alugados e desocupados por mês; VGV e VGL por mês</li>
       </ul>
     </div>
   </div>
 
   <div class="cargo-sub"><h3>Assistente de Locação</h3></div>
+  <div class="cargo-horario">
+    <span>🕖 Seg a sex: 08h–18h</span>
+    <span>🗓️ Sábados intercalados: 08h–12h</span>
+    <span>🍽️ Almoço: 12h15–13h30 (1h15)</span>
+  </div>
   <div class="rotinas">
     <div class="rot-card">
       <div class="freq">Diária</div>
       <ul>
         <li>Atualizar fluxos pelos quais é responsável no Apresenta.me (Fluxos e Tickets)</li>
+      </ul>
+    </div>
+    <div class="rot-card">
+      <div class="freq">Semanal</div>
+      <ul>
+        <li>Organizar estrutura do Drive (contratos, vistorias, contratos de adm, orçamentos de prestadores etc.)</li>
+        <li>Alinhamento com a Dani toda sexta — evolução da equipe como um todo</li>
       </ul>
     </div>
     <div class="rot-card">
@@ -267,42 +308,58 @@
     <div class="rot-card">
       <div class="freq">Anual</div>
       <ul>
-        <li>Revisar parceiros/prestadores — qualidade, preço, disponibilidade</li>
+        <li>Revisar parceiros e prestadores — qualidade, preço, disponibilidade</li>
+        <li>Disparo de aviso sobre limpeza de calha (manutenção)</li>
       </ul>
     </div>
   </div>
 
   <div class="cargo-sub"><h3>Assistente Financeiro</h3></div>
+  <div class="cargo-horario">
+    <span>🕖 Seg a sex: 08h–18h</span>
+    <span>🗓️ Sábados intercalados: 08h–12h</span>
+    <span>🍽️ Almoço: 11h30–12h45 (1h15)</span>
+  </div>
   <div class="rotinas">
     <div class="rot-card">
       <div class="freq">Diária</div>
       <ul>
         <li>Lançar conta assim que chega</li>
-        <li>Conferir retorno bancário — checar os pagamentos e recebimentos do dia anterior</li>
+        <li>Conferir retorno bancário — pagamentos e recebimentos do dia anterior</li>
         <li>Repassar aluguel ao proprietário</li>
         <li>Checar fluxo de Inadimplência</li>
-        <li>Checar lançamentos financeiros pendentes solicitados pelos outros cargos</li>
-        <li>Atualizar fluxos no Apresenta.me</li>
+        <li>Checar lançamentos pendentes solicitados pelos outros cargos</li>
       </ul>
     </div>
     <div class="rot-card">
       <div class="freq">Semanal</div>
       <ul>
-        <li>Segunda — programar pagamento de todas as contas da semana (APBank)</li>
-        <li>Terça — conferir se os pagamentos saíram</li>
+        <li class="hasday"><span class="day">SEG</span><span>Programar pagamento de todas as contas da semana — APBank</span></li>
+        <li class="hasday"><span class="day">TER</span><span>Conferir se os pagamentos saíram</span></li>
       </ul>
     </div>
     <div class="rot-card">
       <div class="freq">Mensal</div>
       <ul>
         <li>Atualizar valor das contas recorrentes</li>
-        <li>Gerar e registrar boletos de aluguel da carteira</li>
+        <li>Gerar e registrar boletos de aluguel da carteira — até dia 20</li>
         <li>Reunir e lançar boletos do próximo mês</li>
+        <li>Gerar NF final do mês</li>
+      </ul>
+    </div>
+    <div class="rot-card">
+      <div class="freq">Anual</div>
+      <ul>
+        <li>Atualizar boletos para o próximo ano (recorrência)</li>
       </ul>
     </div>
   </div>
 
   <div class="cargo-sub"><h3>Pré-atendimento</h3></div>
+  <div class="cargo-horario">
+    <span>🕐 Entrada: 13h00 · saída a definir</span>
+    <span>🗓️ Sábados intercalados: a definir</span>
+  </div>
   <div class="rotinas">
     <div class="rot-card">
       <div class="freq">Diária</div>
@@ -311,14 +368,43 @@
         <li>Conferência final dos atendimentos no fim do dia</li>
       </ul>
     </div>
+    <div class="rot-card">
+      <div class="freq">Semanal</div>
+      <ul>
+        <li>Sem rotina semanal neste cargo</li>
+      </ul>
+    </div>
+    <div class="rot-card">
+      <div class="freq">Mensal</div>
+      <ul>
+        <li>Sem rotina mensal neste cargo</li>
+      </ul>
+    </div>
+    <div class="rot-card">
+      <div class="freq">Anual</div>
+      <ul>
+        <li>Sem rotina anual neste cargo</li>
+      </ul>
+    </div>
   </div>
 
   <div class="cargo-sub"><h3>Gestora</h3></div>
   <div class="rotinas">
     <div class="rot-card">
+      <div class="freq">Diária</div>
+      <ul>
+        <li>Contas em modo geral</li>
+        <li class="hasday"><span class="day">SEG</span><span>Inadimplência (Scaza e contratos cadastrados no Apresenta.me)</span></li>
+        <li class="hasday"><span class="day">TER</span><span>Encerramento</span></li>
+        <li class="hasday"><span class="day">QUA</span><span>Renovação / Anúncios</span></li>
+        <li class="hasday"><span class="day">QUI</span><span>Efetivação / Captação</span></li>
+        <li class="hasday"><span class="day">SEX</span><span>Vendas / Imóveis desocupados</span></li>
+      </ul>
+    </div>
+    <div class="rot-card">
       <div class="freq">Semanal</div>
       <ul>
-        <li>1:1 de gestão com cada colaborador (atividades pendentes e gargalos)</li>
+        <li>1:1 de gestão com cada colaborador — atividades pendentes e gargalos</li>
         <li>Review semanal — processos em andamento e prioridades da próxima semana</li>
         <li>Definir meta de novos contatos da semana</li>
         <li>Revisar leads inativos para reativação</li>
@@ -327,15 +413,19 @@
     <div class="rot-card">
       <div class="freq">Mensal</div>
       <ul>
-        <li>Emitir nota fiscal</li>
-        <li>Conferir balancete/DRE — fechamento financeiro da empresa</li>
+        <li>Emitir nota fiscal (conferir)</li>
+        <li>Conferir balancete e DRE — fechamento financeiro da empresa</li>
         <li>Conferir indicadores operacionais</li>
+        <li>Conferir captações realizadas por corretores</li>
+        <li>Fechamento de vendas e aluguéis</li>
+        <li>Índice de desocupação</li>
+        <li>Reunião ou treinamento geral com a equipe — 1x/mês (dia 20)</li>
       </ul>
     </div>
     <div class="rot-card">
       <div class="freq">Anual</div>
       <ul>
-        <li>Pesquisa de satisfação com proprietários e inquilinos</li>
+        <li>Pesquisa de satisfação com proprietários e inquilinos — selecionar proprietários VIPs para esse contato</li>
         <li>Definir orçamento e planejamento estratégico do próximo ano</li>
         <li>Conferência DIMOB</li>
       </ul>
