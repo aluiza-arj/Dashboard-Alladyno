@@ -241,12 +241,18 @@
     </div>
 
     <div class="card">
-      <h2>Ranking de abandono</h2>
+      <h2>Ranking por dias de atraso</h2>
       <p class="hint">Tarefas ativas ordenadas por dias de atraso.</p>
       <ul class="aband" id="abandoned"></ul>
     </div>
 
-    <div class="toolbar">
+    <div id="taskTabs" style="display:flex;gap:6px;margin:24px 0 12px">
+      <button class="chip on" data-pane="ativas">Ativas (23)</button>
+      <button class="chip" data-pane="concluidas">Concluídas na semana (26)</button>
+    </div>
+
+    <div id="pane-ativas">
+    <div class="toolbar" style="margin-top:0">
       <div class="chips" id="respChips"></div>
       <div class="spacer"></div>
       <select id="statusSel">
@@ -264,7 +270,16 @@
       </tr></thead>
       <tbody id="tbody"></tbody>
     </table></div>
-    <footer>“Atrasadas” e “vencendo hoje” são calculadas sobre o prazo. “Concluídas semana passada” (13–19/07) conta as tarefas em Concluído editadas na semana, pela propriedade “Última edição” — proxy da data de conclusão.</footer>
+    <footer>“Atrasadas” e “vencendo hoje” são calculadas sobre o prazo.</footer>
+    </div>
+
+    <div id="pane-concluidas" style="display:none">
+    <div class="tblwrap"><table id="tblDone">
+      <thead><tr><th>Tarefa <span class="count">(26)</span></th><th>Responsável</th><th>Concluída em</th></tr></thead>
+      <tbody id="doneBody"></tbody>
+    </table></div>
+    <footer>Tarefas em Concluído com última edição entre 13 e 19/07 (proxy da data de conclusão), para a Dani revisar o que foi entregue na semana.</footer>
+    </div>
   </section>
 
   <!-- ===== CONSTRUÇÃO: VISÃO GERAL ===== -->
@@ -359,6 +374,43 @@ function renderTable(){
   }).join("");
 }
 renderTable();
+
+/* ---- Concluídas na semana (13–19/07 · por Última edição) ---- */
+const DONE=[
+ {t:"Revisar todos os contratos configurando multa e juros",r:"Danielle",d:"17/07"},
+ {t:"Contratos que vieram da Valquiria",r:"Philipe",d:"17/07"},
+ {t:"(sem título)",r:"Philipe",d:"17/07"},
+ {t:"Maria Elena — resolver questão do IPTU (dividido em 3x)",r:"Isabella",d:"17/07"},
+ {t:"Lançar condomínio Brasil 21 como pagamento recorrente (despesa de terceiros)",r:"Isabella",d:"17/07"},
+ {t:"Retornar para a cliente Mary — Campanha Lake Side",r:"Jéssica",d:"17/07"},
+ {t:"Fazer lançamentos dos boletos H323 e H236",r:"Danielle",d:"16/07"},
+ {t:"Contrato do The Sun — compra e venda",r:"Danielle",d:"16/07"},
+ {t:"Verificar a DIMOB — F309",r:"Danielle",d:"16/07"},
+ {t:"Rescisão G206 — Alessandra",r:"Danielle",d:"16/07"},
+ {t:"Confecção e envio do contrato de locação Oswaldo x Elaine",r:"Philipe",d:"16/07"},
+ {t:"Transferência de titularidade de contas Neoenergia",r:"Philipe",d:"16/07"},
+ {t:"Ligar p/ Leandro ou Regina — problema com Gerson e proprietária Madalena (DIMOB)",r:"Kawan",d:"16/07"},
+ {t:"Verificar se a loja QI 03 Lago Sul está no DF Imóveis",r:"Kawan",d:"16/07"},
+ {t:"Informações p/ avaliação de venda do prédio — Recanto das Emas Q 111",r:"Kawan",d:"16/07"},
+ {t:"Processo vistoria C402 (entregar até 30/06)",r:"Kawan",d:"16/07"},
+ {t:"Ligar p/ Marcus — contrato para assinatura e solicitar pagamento",r:"Kawan",d:"16/07"},
+ {t:"Ativar “Alertas de cadastro de imóvel” nos cadastros de proprietários e inquilinos",r:"Jéssica",d:"15/07"},
+ {t:"Emitir boletos do Cristian Davi — Flat Lake Side",r:"Isabella",d:"15/07"},
+ {t:"Emitir boleto Luzineide — Loja Samambaia",r:"Isabella",d:"15/07"},
+ {t:"Separar pastas casa 09",r:"Jéssica",d:"15/07"},
+ {t:"Entrar em contato com o cliente que a Alladyno solicitou",r:"Kawan",d:"15/07"},
+ {t:"Lançar o imóvel H236 para o financeiro realizar os lançamentos",r:"Kawan",d:"15/07"},
+ {t:"Verificar vistoria de saída",r:"Philipe",d:"14/07"},
+ {t:"Cobranças de aluguel — Hélio, Márcio, Francisco e Alexandre (Apresenta-me)",r:"Danielle",d:"13/07"},
+ {t:"Rescisão G121 — Localar",r:"Danielle",d:"13/07"}
+];
+$("#doneBody").innerHTML=DONE.map(d=>`<tr><td class="t-title">${d.t}</td><td>${d.r}</td><td class="num">${d.d}</td></tr>`).join("");
+document.querySelectorAll("#taskTabs .chip").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("#taskTabs .chip").forEach(c=>c.classList.toggle("on",c===b));
+  const p=b.dataset.pane;
+  document.getElementById("pane-ativas").style.display=(p==="ativas")?"block":"none";
+  document.getElementById("pane-concluidas").style.display=(p==="concluidas")?"block":"none";
+}));
 
 /* ===================== FLUXOS (APRESENTA.ME · 20/07/2026) ===================== */
 const FLOWS=[
